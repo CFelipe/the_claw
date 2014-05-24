@@ -1,14 +1,17 @@
 CXX = g++
-LDFLAGS = -lSDL2
-CXXFLAGS = -g -Wall -lGL `sdl2-config --cflags --libs`
+CXXFLAGS = -g -Wall `sdl2-config --cflags`
+LIBS = -lGL `sdl2-config --libs`
 OUT = claw
 
-OBJ = claw.o
+OBJ = claw.o \
+      formas.o \
+      junta.o \
+      braco.o
 
 all: $(OUT)
 
 $(OUT): $(OBJ)
-	$(CXX) $(LDFLAGS) $(OBJ) -o $(OUT) $(CXXFLAGS)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(OUT) $(LIBS)
 
 %.o: %.cpp
 	$(CXX) -c $(CXXFLAGS) -o $@ $<

@@ -1,16 +1,20 @@
 #ifndef BRACO_H
 #define BRACO_H
 
-#include <list>
+#include <vector>
 #include "junta.h"
 
 class Braco {
     public:
-        void ~Braco() {}
+        Braco();
+        void atualizar();
         void renderizar();
+        void selecionarJunta(int i);
+        void rotacionarSelecao(GLfloat graus);
 
     private:
-        std::list<Junta> juntas;
+        std::vector<Junta*> juntas;
+        unsigned int juntaSelecionada;
 };
 
 #endif
