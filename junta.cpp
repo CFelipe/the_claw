@@ -1,25 +1,46 @@
 #include "junta.h"
 #include "formas.h"
+#include <iostream>
 
 const GLfloat PIR_W = 5.0f;
 const GLfloat PIR_H = 10.0f;
 const GLfloat ELO_H = 15.0f;
 const GLfloat ELO_R = 2.0f;
 
-Junta::Junta(GLfloat rotacaoMax, GLfloat atrito) {
+Junta::Junta(GLfloat rotacaoMax,
+             GLfloat atrito,
+             GLfloat acelMax) {
     this->rotacaoMax = rotacaoMax;
     this->atrito = atrito;
+    this->acelMax = acelMax;
     this->rotacao = 0;
     this->vel = 0;
-    this->acel = 0;
+    this->acel= 0;
 }
 
-void Junta::rotacionar(GLfloat graus) {
-    rotacao += graus;
+void Junta::atualizar() {
+    vel += acel;
+    rotacao += vel;
+    vel *= atrito;
+
     if(rotacao > rotacaoMax) {
         rotacao = rotacaoMax;
+        acel = 0;
+        vel = 0;
     } else if(rotacao < -rotacaoMax) {
         rotacao = -rotacaoMax;
+        acel = 0;
+        vel = 0;
+    }
+
+    acel = 0;
+}
+
+void Junta::rotacionar(int i) {
+    if(i == 1) {
+        acel = acelMax;
+    } else if(i == -1) {
+        acel = -acelMax;
     }
 }
 

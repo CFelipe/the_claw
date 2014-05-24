@@ -13,6 +13,14 @@ Braco::Braco() {
     juntas.push_back(new JuntaRevolvente());
 }
 
+void Braco::atualizar() {
+    std::vector<Junta*>::iterator it;
+    for(it = juntas.begin(); it != juntas.end(); ++it) {
+        (*it)->atualizar();
+    }
+}
+
+
 void Braco::renderizar() {
     // Base
     Formas::cilindro(25.0f, 5.0f, 16);
@@ -34,6 +42,6 @@ void Braco::selecionarJunta(int i) {
     }
 }
 
-void Braco::rotacionarSelecao(GLfloat graus) {
-    juntas.at(juntaSelecionada)->rotacionar(graus);
+void Braco::rotacionarSelecao(int i) {
+    juntas.at(juntaSelecionada)->rotacionar(i);
 }

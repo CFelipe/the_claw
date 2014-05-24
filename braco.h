@@ -10,7 +10,7 @@ class Braco {
         void atualizar();
         void renderizar();
         void selecionarJunta(int i);
-        void rotacionarSelecao(GLfloat graus);
+        void rotacionarSelecao(int i);
 
     private:
         std::vector<Junta*> juntas;

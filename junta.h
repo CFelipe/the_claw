@@ -6,17 +6,21 @@
 class Junta {
     public:
         Junta(GLfloat rotacaoMax = 45.0f,
-              GLfloat atrito = 0.95f);
-        void rotacionar(GLfloat graus);
+              GLfloat atrito = 0.75f,
+              GLfloat acelMax = 0.15f);
         void atualizar();
+        void rotacionar(int i);
         virtual void renderizar() = 0;
 
     protected:
+        // Constantes
         GLfloat rotacaoMax;
-        GLfloat rotacao;
+        GLfloat acelMax;
         GLfloat atrito;
-        GLfloat vel;
+        // Variáveis
         GLfloat acel;
+        GLfloat vel;
+        GLfloat rotacao;
 };
 
 class JuntaPrismatica : public Junta {

@@ -102,16 +102,12 @@ int main( int argc, char* args[] ) {
                             if(keys[SDL_SCANCODE_C]) {
                                 x_acel = ACEL;
                                 x_mult = 1;
-                            } else {
-                                braco->rotacionarSelecao(5.0f);
                             }
                             break;
                         case SDLK_RIGHT:
                             if(keys[SDL_SCANCODE_C]) {
                                 x_acel = -ACEL;
                                 x_mult = 1;
-                            } else {
-                                braco->rotacionarSelecao(-5.0f);
                             }
                             break;
                             /*
@@ -152,6 +148,16 @@ int main( int argc, char* args[] ) {
                     quit = true;
                 }
             }
+
+            if(keys[SDL_SCANCODE_LEFT] && !keys[SDL_SCANCODE_C]) {
+                braco->rotacionarSelecao(1);
+            }
+
+            if(keys[SDL_SCANCODE_RIGHT] && !keys[SDL_SCANCODE_C]) {
+                braco->rotacionarSelecao(-1);
+            }
+
+            braco->atualizar();
 
             if(x_vel > MAX_VEL) {
                 x_vel = MAX_VEL;
