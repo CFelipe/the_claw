@@ -14,30 +14,17 @@ const float PIR_W = 10.0f;
 const float PIR_H = 20.0f;
 const float CAM_DIST = 70.0f;
 
-void cam1(GLfloat x, GLfloat y) {
-    glScalef(0.5f, 0.5f, 0.5f);
-    glTranslatef(0.0f, -10.0f, 0.0f);
-    glRotatef(y, 1.f, 0.f, 0.f);
-    glRotatef(x, 0.f, 1.f, 0.f);
-}
-
-void cam2() {
-    glScalef(0.5f, 0.5f, 0.5f);
-    glRotatef(45, 1.f, 0.f, 0.f);
-    glRotatef(45, 0.f, 1.f, 0.f);
-}
-
-void persp1() {
+void orthoPro() {
     glOrtho(-CAM_DIST, CAM_DIST,        // L, R
             -CAM_DIST, CAM_DIST,        // B, T
-            -500, 500);                 // N, F
+            -500, 1000);                 // N, F
 }
 
-void persp2() {
-    //glRotatef(15, 0.f, 1.f, 0.f);
-    glFrustum(-3, 3,      // L, R
-              -3, 3,      // B, T
-              -10, 10);   // N, F
+void perspPro(GLfloat fovy, GLfloat aspect, GLfloat near, GLfloat far) {
+    GLfloat fH, fW;
+    fH = tan(fovy / 360 * M_PI) * near;
+    fW = fH * aspect;
+    glFrustum(-fW, fW, -fH, fH, near, far);
 }
 
 int main( int argc, char* args[] ) {
@@ -65,13 +52,17 @@ int main( int argc, char* args[] ) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        bool quit;
-        float r_mult, x_mult, y_mult;
+        bool quit, persp;
+        float x_mult, y_mult;
         GLfloat x, y, x_vel, y_vel, x_acel, y_acel;
 
-        r_mult = x_mult = y_mult = 1;
-        x = y = x_vel = y_vel = x_acel = y_acel = 0;
+        x_mult = y_mult = 1;
+        x_vel = y_vel = x_acel = y_acel = 0;
+        x = 45.0f;
+        y = 20.0f;
+
         quit = false;
+        persp = false;
 
         const Uint8* keys = NULL;
         keys = SDL_GetKeyboardState(NULL);
@@ -110,11 +101,9 @@ int main( int argc, char* args[] ) {
                                 x_mult = 1;
                             }
                             break;
-                            /*
-                        case SDLK_SPACE:
-                            r_mult = ACEL_RESET;
+                        case SDLK_x:
+                            persp = !persp;
                             break;
-                            */
                         default:
                             break;
                     }
@@ -136,11 +125,6 @@ int main( int argc, char* args[] ) {
                             x_acel = 0;
                             x_mult = VEL_DEC;
                             break;
-                            /*
-                        case SDLK_SPACE:
-                            r_mult = 1;
-                            break;
-                            */
                         default:
                             break;
                     }
@@ -177,44 +161,30 @@ int main( int argc, char* args[] ) {
             y_vel += y_acel;
             x += x_vel;
             y += y_vel;
-            x *= r_mult;
-            y *= r_mult;
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
 
-            cam1(x, y);
+            glTranslatef(0.0f, -50.0f, -250.0f);
+            glRotatef(y, 1.f, 0.f, 0.f);
+            glRotatef(x, 0.f, 1.f, 0.f);
+            //cam1(x, y);
 
-            Formas::grade(300.0f, 5.0f);
+            Formas::grade(300.0f, 10.0f);
             Formas::xyz(100.0f, 1.0f);
 
             braco->renderizar();
 
-            /*
-            Formas::piramide(PIR_W, PIR_H);
-
-            glTranslatef(0.0f, PIR_H, 0.0f);
-            Formas::cilindro(1.0f, PIR_H, 16);
-
-            glTranslatef(0.0f, PIR_H, 0.0f);
-            glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
-            //glRotatef(x, 0.0f, 1.0f, 0.0f);
-            Formas::piramide(PIR_W, PIR_H);
-
-            glTranslatef(0.0f, PIR_H, 0.0f);
-            glRotatef(x, 0.0f, 1.0f, 0.0f);
-            Formas::piramide(PIR_W, PIR_H);
-
-            glTranslatef(0.0f, PIR_H, 0.0f);
-            glRotatef(x, 0.0f, 1.0f, 0.0f);
-            Formas::piramide(PIR_W, PIR_H);
-            */
-
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            persp1();
+
+            if(persp) {
+                perspPro(45.0f, 1.5f, 1, 1000);
+            } else {
+                orthoPro();
+            }
 
             glFlush();
 
