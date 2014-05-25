@@ -121,6 +121,7 @@ int main( int argc, char* args[] ) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        glShadeModel(GL_SMOOTH);
         glEnable(GL_LIGHTING); // liga a luz
         glEnable(GL_LIGHT0); // define qual luz
         glEnable(GL_LIGHT1); // define qual luz
@@ -128,6 +129,11 @@ int main( int argc, char* args[] ) {
         bool quit, persp;
         float x_mult, y_mult;
         GLfloat x, y, x_vel, y_vel, x_acel, y_acel;
+
+        Uint32 tempoAtual, tempoPassado;
+        float dt;
+
+        tempoAtual = SDL_GetTicks();
 
         x_mult = y_mult = 1;
         x_vel = y_vel = x_acel = y_acel = 0;
@@ -143,6 +149,10 @@ int main( int argc, char* args[] ) {
         Braco* braco = new Braco();
 
         while(!quit) {
+            tempoPassado = tempoAtual;
+            tempoAtual = SDL_GetTicks();
+            dt = (tempoAtual - tempoPassado) / 1000.0f;
+
             while(SDL_PollEvent(&e)) {
                 if(e.type == SDL_KEYDOWN) {
                     switch(e.key.keysym.sym) {
@@ -214,7 +224,7 @@ int main( int argc, char* args[] ) {
                 braco->rotacionarSelecao(-1);
             }
 
-            braco->atualizar();
+            braco->atualizar(dt);
 
             if(x_vel > MAX_VEL) {
                 x_vel = MAX_VEL;

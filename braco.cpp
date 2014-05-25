@@ -13,10 +13,10 @@ Braco::Braco() {
     juntas.push_back(new JuntaRevolvente());
 }
 
-void Braco::atualizar() {
+void Braco::atualizar(float dt) {
     std::vector<Junta*>::iterator it;
     for(it = juntas.begin(); it != juntas.end(); ++it) {
-        (*it)->atualizar();
+        (*it)->atualizar(dt);
     }
 }
 
