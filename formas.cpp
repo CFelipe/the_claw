@@ -37,6 +37,7 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco) {
     glEnable(GL_COLOR_MATERIAL);
 
     glColor3f(0, 1.0, 0.0);
+    glNormal3f(0,1,0);
     glBegin(GL_LINES);
         float i;
 
@@ -67,7 +68,7 @@ void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {
     glBegin(GL_TRIANGLE_FAN);
         glVertex3f(0.0, 0, 0.0);
         for(i = 0; i <= lados; i++) {
-            glNormal3f(0,1,0);
+            glNormal3f(0,-1,0);
             glVertex3f(raio * cosf(i * lado * rad), 0, raio * sinf(i * lado * rad));
         }
     glEnd();

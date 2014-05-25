@@ -19,33 +19,18 @@ GLfloat difusao[2][4];  // degradê
 GLfloat especular[2][4]; // brilho
 GLfloat posicaoLuz[2][4];
 
-
-void cam1(GLfloat x, GLfloat y) {
-    glScalef(0.5f, 0.5f, 0.5f);
-    glTranslatef(0.0f, -10.0f, 0.0f);
-    glRotatef(y, 1.f, 0.f, 0.f);
-    glRotatef(x, 0.f, 1.f, 0.f);
-}
-
-void cam2() {
-    glScalef(0.5f, 0.5f, 0.5f);
-    glRotatef(45, 1.f, 0.f, 0.f);
-    glRotatef(45, 0.f, 1.f, 0.f);
-}
-
-void persp1() {
+void orthoPro() {
     glOrtho(-CAM_DIST, CAM_DIST,        // L, R
             -CAM_DIST, CAM_DIST,        // B, T
-            -500, 500);                 // N, F
+            -500, 1000);                // N, F
 }
 
-void persp2() {
-    //glRotatef(15, 0.f, 1.f, 0.f);
-    glFrustum(-3, 3,      // L, R
-              -3, 3,      // B, T
-              -10, 10);   // N, F
+void perspPro(GLfloat fovy, GLfloat aspect, GLfloat near, GLfloat far) {
+    GLfloat fH, fW;
+    fH = tan(fovy / 360 * M_PI) * near;
+    fW = fH * aspect;
+    glFrustum(-fW, fW, -fH, fH, near, far);
 }
-
 
 void iluminacao(GLfloat x, GLfloat y){
         ambiente[0] = 0.3;
@@ -53,9 +38,9 @@ void iluminacao(GLfloat x, GLfloat y){
         ambiente[2] = 0.3;
         ambiente[3] = 1.0;
 
-        difusao[0][0] = 0.3;
-        difusao[0][1] = 0.3;
-        difusao[0][2] = 0.3;
+        difusao[0][0] = 0.7;
+        difusao[0][1] = 0.7;
+        difusao[0][2] = 0.7;
         difusao[0][3] = 1.0;
 
         especular[0][0] = 0.2;
@@ -65,7 +50,7 @@ void iluminacao(GLfloat x, GLfloat y){
 
         posicaoLuz[0][0] = 50.0f;
         posicaoLuz[0][1] = 50.0f;
-        posicaoLuz[0][2] = 0.0;
+        posicaoLuz[0][2] = 50.0f;
         posicaoLuz[0][3] = 1.0;
 
         difusao[1][0] = 0.5;
@@ -73,14 +58,14 @@ void iluminacao(GLfloat x, GLfloat y){
         difusao[1][2] = 0.5;
         difusao[1][3] = 1.0;
 
-        especular[1][0] = 1.0;
-        especular[1][1] = 1.0;
-        especular[1][2] = 1.0;
-        especular[1][3] = 1.0;
+        especular[1][0] = 0.5;
+        especular[1][1] = 0.5;
+        especular[1][2] = 0.5;
+        especular[1][3] = 0.5;
 
-        posicaoLuz[1][0] = 50.0;
+        posicaoLuz[1][0] = -50.0;
         posicaoLuz[1][1] = 50.0;
-        posicaoLuz[1][2] = 0.0;
+        posicaoLuz[1][2] = -50.0;
         posicaoLuz[1][3] = 1.0;
 
         glPushMatrix();
@@ -88,21 +73,26 @@ void iluminacao(GLfloat x, GLfloat y){
             Formas::piramide(10.0f, 20.0f);
         glPopMatrix();
 
+        glPushMatrix();
+            glTranslatef(posicaoLuz[1][0], posicaoLuz[1][1], posicaoLuz[1][2]);
+            Formas::piramide(10.0f, 20.0f);
+        glPopMatrix();
+
         //glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT, ambiente);
         //glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, especular[0]);
         //glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 10); // componente especular do material
 
-        //glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente);
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente);
 
         //glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao[0]);
-        //glLightfv(GL_LIGHT1, GL_SPECULAR, especular[0]);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, especular[0]);
         glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz[0]);
 
         //glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
-        //glLightfv(GL_LIGHT1, GL_DIFFUSE, difusao[1]);
-        //glLightfv(GL_LIGHT1, GL_SPECULAR, especular[1]);
-        //glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz[1]);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, difusao[1]);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, especular[1]);
+        glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz[1]);
 
 }
 
@@ -133,17 +123,19 @@ int main( int argc, char* args[] ) {
 
         glEnable(GL_LIGHTING); // liga a luz
         glEnable(GL_LIGHT0); // define qual luz
+        glEnable(GL_LIGHT1); // define qual luz
 
-        //glEnable(GL_LIGHT1); // define qual luz
-        //glEnable(GL_COLOR_MATERIAL);
-
-        bool quit;
-        float r_mult, x_mult, y_mult;
+        bool quit, persp;
+        float x_mult, y_mult;
         GLfloat x, y, x_vel, y_vel, x_acel, y_acel;
 
-        r_mult = x_mult = y_mult = 1;
-        x = y = x_vel = y_vel = x_acel = y_acel = 0;
+        x_mult = y_mult = 1;
+        x_vel = y_vel = x_acel = y_acel = 0;
+        x = 45.0f;
+        y = 20.0f;
+
         quit = false;
+        persp = false;
 
         const Uint8* keys = NULL;
         keys = SDL_GetKeyboardState(NULL);
@@ -182,11 +174,9 @@ int main( int argc, char* args[] ) {
                                 x_mult = 1;
                             }
                             break;
-                            /*
-                        case SDLK_SPACE:
-                            r_mult = ACEL_RESET;
+                        case SDLK_x:
+                            persp = !persp;
                             break;
-                            */
                         default:
                             break;
                     }
@@ -208,11 +198,6 @@ int main( int argc, char* args[] ) {
                             x_acel = 0;
                             x_mult = VEL_DEC;
                             break;
-                            /*
-                        case SDLK_SPACE:
-                            r_mult = 1;
-                            break;
-                            */
                         default:
                             break;
                     }
@@ -249,26 +234,31 @@ int main( int argc, char* args[] ) {
             y_vel += y_acel;
             x += x_vel;
             y += y_vel;
-            x *= r_mult;
-            y *= r_mult;
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
 
-            cam1(x, y);
+            glTranslatef(0.0f, -50.0f, -250.0f);
+            glRotatef(y, 1.f, 0.f, 0.f);
+            glRotatef(x, 0.f, 1.f, 0.f);
 
             iluminacao(x, y);
 
-            Formas::grade(300.0f, 5.0f);
+            Formas::grade(300.0f, 10.0f);
             Formas::xyz(100.0f, 1.0f);
 
             braco->renderizar();
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            persp1();
+
+            if(persp) {
+                perspPro(45.0f, 1.5f, 1, 1000);
+            } else {
+                orthoPro();
+            }
 
             glFlush();
 
