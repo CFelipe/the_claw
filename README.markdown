@@ -28,3 +28,4 @@ Comando             | Ação
 C + ← / ↑ / → / ↓   | Movimentação da câmera
 ← / →               | Rotacionar junta
 ↑ / ↓               | Alterar junta selecionada
+X                   | Alterar projeção
