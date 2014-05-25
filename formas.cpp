@@ -7,6 +7,9 @@ const float EPSILON = 0.0001f;
 void Formas::xyz(GLfloat tamanho, GLfloat altura) {
     glLineWidth(3);
 
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+
     glColor3f(1.0, 0.0, 0.0);
     glBegin(GL_LINES);
         glVertex3f(0, altura, 0);
@@ -24,10 +27,15 @@ void Formas::xyz(GLfloat tamanho, GLfloat altura) {
         glVertex3f(0, altura, 0);
         glVertex3f(0, altura, tamanho);
     glEnd();
+
+    glDisable(GL_COLOR_MATERIAL);
 }
 
 void Formas::grade(GLfloat tamanho, GLfloat espaco) {
     glLineWidth(1);
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+
     glColor3f(0, 1.0, 0.0);
     glBegin(GL_LINES);
         float i;
@@ -42,10 +50,12 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco) {
             i += espaco;
         }
     glEnd();
+    glDisable(GL_COLOR_MATERIAL);
 }
 
 void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {
     glPushMatrix();
+
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
@@ -53,16 +63,18 @@ void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {
     float lado = 360.0f / lados;
     float rad = M_PI / 180.0f;
 
-    glColor3f(1.0, 1.0, 0.0);
+    glColor3f(1.0, 0.0, 0.0);
     glBegin(GL_TRIANGLE_FAN);
         glVertex3f(0.0, 0, 0.0);
         for(i = 0; i <= lados; i++) {
+            glNormal3f(0,1,0);
             glVertex3f(raio * cosf(i * lado * rad), 0, raio * sinf(i * lado * rad));
         }
     glEnd();
 
     for(i = 0; i <= lados; i++) {
         glBegin(GL_TRIANGLE_STRIP);
+            glNormal3f(cosf(i * lado * rad), 0.0, cosf(i * lado * rad));
             glVertex3f(raio * cosf(i * lado * rad), 0, raio * sinf(i * lado * rad));
             glVertex3f(raio * cosf(i * lado * rad), altura, raio * sinf(i * lado * rad));
             glVertex3f(raio * cosf((i + 1) * lado * rad), 0, raio * sinf((i + 1) * lado * rad));
@@ -73,6 +85,7 @@ void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {
     glBegin(GL_TRIANGLE_FAN);
         glVertex3f(0.0, altura, 0.0);
         for(i = 0; i <= lados; i++) {
+            glNormal3f(0,1,0);
             glVertex3f(raio * cosf(i * lado * rad), altura, raio * sinf(i * lado * rad));
         }
     glEnd();
@@ -83,6 +96,7 @@ void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {
 
 void Formas::piramide(GLfloat base, GLfloat altura) {
     glPushMatrix();
+
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
@@ -118,8 +132,8 @@ void Formas::piramide(GLfloat base, GLfloat altura) {
         glVertex3f(0,altura,0);
         glNormal3f(base,0,base);
         glVertex3f(base,0,base);
-
     glEnd();
+
     glDisable(GL_COLOR_MATERIAL);
     glPopMatrix();
 }
