@@ -15,9 +15,9 @@ const float PIR_H = 20.0f;
 const float CAM_DIST = 70.0f;
 
 GLfloat ambiente[4];
-GLfloat difusao[2][4];  // degradê
-GLfloat especular[2][4]; // brilho
-GLfloat posicaoLuz[2][4];
+GLfloat difusao[3][4];  // degradê
+GLfloat especular[3][4]; // brilho
+GLfloat posicaoLuz[3][4];
 
 void orthoPro() {
     glOrtho(-CAM_DIST, CAM_DIST,        // L, R
@@ -33,9 +33,9 @@ void perspPro(GLfloat fovy, GLfloat aspect, GLfloat near, GLfloat far) {
 }
 
 void iluminacao(GLfloat x, GLfloat y){
-        ambiente[0] = 0.3;
-        ambiente[1] = 0.3;
-        ambiente[2] = 0.3;
+        ambiente[0] = 0.2;
+        ambiente[1] = 0.2;
+        ambiente[2] = 0.2;
         ambiente[3] = 1.0;
 
         difusao[0][0] = 0.7;
@@ -43,32 +43,39 @@ void iluminacao(GLfloat x, GLfloat y){
         difusao[0][2] = 0.7;
         difusao[0][3] = 1.0;
 
-        especular[0][0] = 0.2;
-        especular[0][1] = 0.2;
-        especular[0][2] = 0.2;
-        especular[0][3] = 1.0;
+        especular[0][0] = 0.8;
+        especular[0][1] = 0.8;
+        especular[0][2] = 0.8;
+        especular[0][3] = 0.0;
 
         posicaoLuz[0][0] = 50.0f;
         posicaoLuz[0][1] = 50.0f;
         posicaoLuz[0][2] = 50.0f;
         posicaoLuz[0][3] = 1.0;
 
-        difusao[1][0] = 0.5;
-        difusao[1][1] = 0.5;
-        difusao[1][2] = 0.5;
+        difusao[1][0] = 0.7;
+        difusao[1][1] = 0.7;
+        difusao[1][2] = 0.7;
         difusao[1][3] = 1.0;
 
-        especular[1][0] = 0.5;
-        especular[1][1] = 0.5;
-        especular[1][2] = 0.5;
-        especular[1][3] = 0.5;
+        especular[1][0] = 0.8;
+        especular[1][1] = 0.8;
+        especular[1][2] = 0.8;
+        especular[1][3] = 1.0;
 
         posicaoLuz[1][0] = -50.0;
         posicaoLuz[1][1] = 50.0;
         posicaoLuz[1][2] = -50.0;
         posicaoLuz[1][3] = 1.0;
 
-        glPushMatrix();
+	
+	posicaoLuz[2][0] = 0;
+        posicaoLuz[2][1] = 90.0;
+        posicaoLuz[2][2] = 0;
+        posicaoLuz[2][3] = 1.0;
+
+	
+        /*glPushMatrix();
             glTranslatef(posicaoLuz[0][0], posicaoLuz[0][1], posicaoLuz[0][2]);
             Formas::piramide(10.0f, 20.0f);
         glPopMatrix();
@@ -78,22 +85,33 @@ void iluminacao(GLfloat x, GLfloat y){
             Formas::piramide(10.0f, 20.0f);
         glPopMatrix();
 
-        //glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT, ambiente);
-        //glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, especular[0]);
-        //glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 10); // componente especular do material
+	
+        glPushMatrix();
+            glTranslatef(posicaoLuz[2][0], posicaoLuz[2][1], posicaoLuz[2][2]);
+            Formas::piramide(10.0f, 20.0f);
+        glPopMatrix();
+	
+	*/
+        glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 30); // componente especular do material
 
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente);
+        //glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente);
 
-        //glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao[0]);
         glLightfv(GL_LIGHT1, GL_SPECULAR, especular[0]);
         glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz[0]);
 
-        //glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
         glLightfv(GL_LIGHT1, GL_DIFFUSE, difusao[1]);
         glLightfv(GL_LIGHT1, GL_SPECULAR, especular[1]);
         glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz[1]);
 
+	
+        glLightfv(GL_LIGHT2, GL_AMBIENT, ambiente);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, difusao[1]);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, especular[1]);
+        glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz[2]);
+	
 }
 
 int main( int argc, char* args[] ) {
@@ -123,8 +141,10 @@ int main( int argc, char* args[] ) {
 
         glShadeModel(GL_SMOOTH);
         glEnable(GL_LIGHTING); // liga a luz
-        glEnable(GL_LIGHT0); // define qual luz
-        glEnable(GL_LIGHT1); // define qual luz
+        glEnable(GL_LIGHT0); // define a luz 0
+        glEnable(GL_LIGHT1); // define a luz 1
+        glEnable(GL_LIGHT2); // define a luz 1
+
 
         bool quit, persp;
         float x_mult, y_mult;
@@ -254,7 +274,7 @@ int main( int argc, char* args[] ) {
             glRotatef(y, 1.f, 0.f, 0.f);
             glRotatef(x, 0.f, 1.f, 0.f);
 
-            iluminacao(x, y);
+           iluminacao(x, y);
 
             Formas::grade(300.0f, 10.0f);
             Formas::xyz(100.0f, 1.0f);
