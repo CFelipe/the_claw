@@ -12,15 +12,15 @@ void Formas::criaTextura(SDL_Surface* image)
 
    glBindTexture(GL_TEXTURE_2D, id);
 
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
    
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+   //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
    GLint formato =
       image->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA;
 
-   glTexImage2D(GL_TEXTURE_2D, 0, formato,image->w, image->h, 0, formato, GL_UNSIGNED_BYTE, image->pixels);
+   glTexImage2D(GL_TEXTURE_2D, 0, formato,256, 256, 0, formato, GL_UNSIGNED_BYTE, image->pixels);
 	
    SDL_FreeSurface(image); 
 } 
@@ -54,7 +54,6 @@ void Formas::xyz(GLfloat tamanho, GLfloat altura) {
 
 void Formas::grade(GLfloat tamanho, GLfloat espaco) {
 	glEnable(GL_TEXTURE_2D);
-	
     glLineWidth(1);
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
