@@ -7,6 +7,7 @@ class Formas {
         static void cilindro(GLfloat raio, GLfloat altura, int lados);
         static void xyz(GLfloat tamanho, GLfloat altura);
         static void grade(GLfloat tamanho, GLfloat espaco);
+        static void base();
 };
 
 #endif

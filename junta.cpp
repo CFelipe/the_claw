@@ -13,9 +13,9 @@ Junta::Junta(GLfloat rotacaoMax,
     this->rotacaoMax = rotacaoMax;
     this->atrito = atrito;
     this->acelMax = acelMax;
-    this->rotacao = 0;
-    this->vel = 0;
-    this->acel= 0;
+    this->rotacao = 0.0f;
+    this->vel = 0.0f;
+    this->acel= 0.0f;
 }
 
 void Junta::atualizar(float dt) {

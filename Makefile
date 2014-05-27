@@ -6,7 +6,8 @@ OUT = claw
 OBJ = claw.o \
       formas.o \
       junta.o \
-      braco.o
+      braco.o \
+      camera.o
 
 all: $(OUT)
 
