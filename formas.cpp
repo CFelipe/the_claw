@@ -1,22 +1,20 @@
 #include <SDL_opengl.h>
 #include <math.h>
-
+#include <iostream>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "formas.h"
 
 const float EPSILON = 0.0001f;
 const float PI = 3.14;
-void Formas::criaTextura(SDL_Surface* image)
+void Formas::criaTextura(SDL_Surface* image, GLuint id)
 {   
 
-    GLuint id = 0;
-    glGenTextures(1, &id);
     glBindTexture(GL_TEXTURE_2D, id);
-
+	std::cout<<id<<std::endl;
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
+	
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -30,7 +28,7 @@ void Formas::criaTextura(SDL_Surface* image)
 } 
 
 
-void Formas::esfera(SDL_Surface *textura){
+void Formas::esfera(SDL_Surface *textura, GLuint id){
     
     glEnable(GL_TEXTURE_2D);
 
@@ -39,7 +37,7 @@ void Formas::esfera(SDL_Surface *textura){
 
     glColor3f(1.0, 1.0, 1.0);
 
-    criaTextura(textura);
+    criaTextura(textura, id);
     GLUquadricObj *q =  gluNewQuadric();
     gluQuadricNormals(q, GLU_SMOOTH);
     gluQuadricTexture(q, GL_TRUE);
@@ -78,7 +76,7 @@ void Formas::xyz(GLfloat tamanho, GLfloat altura) {
     glDisable(GL_COLOR_MATERIAL);
 }
 
-void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura) {
+void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint id) {
     
     glEnable(GL_TEXTURE_2D);
 
@@ -87,7 +85,7 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura) {
     glEnable(GL_COLOR_MATERIAL);
     glColor3f(0, 1.0, 0);
     glNormal3f(0,1,0);
-    criaTextura(textura);
+    criaTextura(textura, id);
     glBegin(GL_QUADS);
     glTexCoord2i(0,0);
     glVertex3f(-256, 0, -256);

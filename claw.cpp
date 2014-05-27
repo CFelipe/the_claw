@@ -138,6 +138,7 @@ int main( int argc, char* args[] ) {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_TEXTURE_2D);
 
         glShadeModel(GL_SMOOTH);
         glEnable(GL_LIGHTING); // liga a luz
@@ -146,8 +147,9 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHT2); // define a luz 1
 	SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
 	SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
-		
-
+	GLuint piso, esfera = 0;
+        glGenTextures(1, &piso);
+	glGenTextures(1, &esfera);
         bool quit, persp;
         float x_mult, y_mult;
         GLfloat x, y, x_vel, y_vel, x_acel, y_acel;
@@ -278,7 +280,7 @@ int main( int argc, char* args[] ) {
 
            iluminacao(x, y);
 
-            Formas::grade(300.0f, 10.0f, textura);
+            Formas::grade(300.0f, 10.0f, textura, piso);
 
             Formas::xyz(100.0f, 1.0f);
 
@@ -286,7 +288,7 @@ int main( int argc, char* args[] ) {
        
 	 glPushMatrix();
             glTranslatef(50, 11, 50);
-            Formas::esfera(brazuca);
+            Formas::esfera(brazuca, esfera);
         glPopMatrix();
 
             braco->renderizar();
@@ -312,6 +314,7 @@ int main( int argc, char* args[] ) {
  
     }
 
+	glDisable(GL_TEXTURE_2D);
     SDL_Quit();
 
     return 0;
