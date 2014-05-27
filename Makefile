@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -g -Wall `sdl2-config --cflags`
-LIBS = -lGL `sdl2-config --libs`
+LIBS = -lGL `sdl2-config --libs` -lGLU -lGL -lX11 -lm  -lGLEW
 OUT = claw
 
 OBJ = claw.o \

@@ -144,7 +144,9 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHT0); // define a luz 0
         glEnable(GL_LIGHT1); // define a luz 1
         glEnable(GL_LIGHT2); // define a luz 1
-
+	SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
+	SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
+		
 
         bool quit, persp;
         float x_mult, y_mult;
@@ -276,8 +278,16 @@ int main( int argc, char* args[] ) {
 
            iluminacao(x, y);
 
-            Formas::grade(300.0f, 10.0f);
+            Formas::grade(300.0f, 10.0f, textura);
+
             Formas::xyz(100.0f, 1.0f);
+
+	    
+       
+	 glPushMatrix();
+            glTranslatef(50, 11, 50);
+            Formas::esfera(brazuca);
+        glPopMatrix();
 
             braco->renderizar();
 
@@ -294,9 +304,12 @@ int main( int argc, char* args[] ) {
 
             SDL_GL_SwapWindow(window);
         }
-
+	
+	SDL_FreeSurface(textura);
+	SDL_FreeSurface(brazuca); 
         SDL_GL_DeleteContext(glContext);
         SDL_DestroyWindow(window);
+ 
     }
 
     SDL_Quit();
