@@ -144,6 +144,7 @@ void Formas::piramide(GLfloat base, GLfloat altura) {
 
 void Formas::cubo(float lado) {
     glPushMatrix();
+    glTranslatef(-lado * 0.5f, -lado * 0.5f, -lado * 0.5f);
 
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);

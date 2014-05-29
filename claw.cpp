@@ -108,6 +108,7 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHT2); // define a luz 1
 
 
+        bool slomo;
         bool quit;
 
         Uint32 tempoAtual, tempoPassado;
@@ -116,6 +117,7 @@ int main( int argc, char* args[] ) {
         tempoAtual = SDL_GetTicks();
 
         quit = false;
+        slomo = false;
 
         const Uint8* keys = NULL;
         keys = SDL_GetKeyboardState(NULL);
@@ -125,8 +127,6 @@ int main( int argc, char* args[] ) {
         Braco* braco = new Braco();
 
         //fisica->init();
-
-
 
         btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 
@@ -142,6 +142,7 @@ int main( int argc, char* args[] ) {
         btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
 
         btCollisionShape* fallShape = new btBoxShape(btVector3(5, 5, 5));
+        btCollisionShape* fallShape2 = new btBoxShape(btVector3(5, 5, 5));
         //btCollisionShape* fallShape = new btSphereShape(5);
 
 
@@ -154,15 +155,26 @@ int main( int argc, char* args[] ) {
 
 
         btDefaultMotionState* fallMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,100,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(5,100,0)));
         btScalar mass = 1;
         btVector3 fallInertia(0,0,0);
         fallShape->calculateLocalInertia(mass,fallInertia);
         btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
         fallRigidBodyCI.m_friction = 3.5f;
         btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
-        fallRigidBody->setLinearVelocity(btVector3(10.0f,5.0f,0));
+        fallRigidBody->setLinearVelocity(btVector3(2.0f,40.0f,0));
         dynamicsWorld->addRigidBody(fallRigidBody);
+
+        btDefaultMotionState* fallMotionState2 =
+                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,120,0)));
+        btScalar mass2 = 1;
+        btVector3 fallInertia2(0,0,0);
+        fallShape2->calculateLocalInertia(mass,fallInertia);
+        btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass2,fallMotionState2,fallShape,fallInertia);
+        fallRigidBodyCI2.m_friction = 3.5f;
+        btRigidBody* fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
+        //fallRigidBody2->setLinearVelocity(btVector3(10.0f,5.0f,0));
+        dynamicsWorld->addRigidBody(fallRigidBody2);
 
         while(!quit) {
             tempoPassado = tempoAtual;
@@ -184,6 +196,9 @@ int main( int argc, char* args[] ) {
                             break;
                         case SDLK_x:
                             camera->alterarProjecao();
+                            break;
+                        case SDLK_s:
+                            slomo = !slomo;
                             break;
                         default:
                             break;
@@ -216,6 +231,19 @@ int main( int argc, char* args[] ) {
                 }
             }
 
+            if(keys[SDL_SCANCODE_Z]) {
+                if(keys[SDL_SCANCODE_LSHIFT]) {
+                    camera->alterarZoom(-1);
+                } else {
+                    camera->alterarZoom(1);
+                }
+            }
+
+            if(slomo) {
+                dynamicsWorld->stepSimulation(dt * 0.3, 10);
+            } else {
+                dynamicsWorld->stepSimulation(dt, 10);
+            }
             camera->atualizar(dt);
             braco->atualizar(dt);
 
@@ -224,11 +252,7 @@ int main( int argc, char* args[] ) {
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
 
-
-
-
-
-
+            // Renderização ----------------------------------
 
             camera->posicionar();
 
@@ -239,12 +263,7 @@ int main( int argc, char* args[] ) {
 
             //Formas::base();
 
-            glPushMatrix();
-                glTranslatef(20.0f, 0.0f, 20.0f);
-                Formas::cubo(10.0f);
-            glPopMatrix();
-
-            dynamicsWorld->stepSimulation(dt, 10);
+            // Física ------------------------------------
 
             btTransform trans;
             fallRigidBody->getMotionState()->getWorldTransform(trans);
@@ -252,13 +271,27 @@ int main( int argc, char* args[] ) {
             trans.getOpenGLMatrix(m);
 
             glPushMatrix();
-                glTranslatef(0.0, -5.0f, 0.0f);
+                //glTranslatef(0.0f, 50.0f, 0.0f);
+                //glTranslatef(-5.0f, -5.0f, -5.0f);
                 glMultMatrixf((GLfloat*)m);
 
                 Formas::cubo(10.0f);
             glPopMatrix();
 
-            braco->renderizar();
+            fallRigidBody2->getMotionState()->getWorldTransform(trans);
+            trans.getOpenGLMatrix(m);
+
+            glPushMatrix();
+                //glTranslatef(-5.0f, -5.0f, -5.0f);
+                //glTranslatef(0.0f, 5.0f, 0.0f);
+                glMultMatrixf((GLfloat*)m);
+
+                Formas::cubo(10.0f);
+            glPopMatrix();
+
+
+
+            //braco->renderizar();
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();

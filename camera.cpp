@@ -2,14 +2,17 @@
 #include <SDL_opengl.h>
 
 Camera::Camera() {
-    this->acelMax = 10.0f;
+    this->acelMax = 7.0f;
     this->atrito = 0.85f;
     this->rotacaoX = 45.0f;
     this->rotacaoY = 20.0f;
+    this->zoom = 0.0f;
     this->velX = 0.0f;
     this->velY = 0.0f;
+    this->velZoom = 0.0f;
     this->acelX = 0.0f;
     this->acelY = 0.0f;
+    this->acelZoom = 0.0f;
     this->projecao = PERSPECTIVA;
 }
 
@@ -27,6 +30,14 @@ void Camera::alterarDirecao(int horizontal, int vertical) {
     }
 }
 
+void Camera::alterarZoom(int direcao) {
+    if(direcao == 1) {
+        acelZoom = acelMax / 100;
+    } else if(direcao == -1) {
+        acelZoom = -acelMax / 100;
+    }
+}
+
 void Camera::alterarProjecao() {
     if(this->projecao == PERSPECTIVA) {
         this->projecao = ORTOGRAFICA;
@@ -38,16 +49,21 @@ void Camera::alterarProjecao() {
 void Camera::atualizar(float dt) {
     velX += acelX;
     velY += acelY;
+    velZoom += acelZoom;
     rotacaoX += velX * dt;
     rotacaoY += velY * dt;
+    zoom += velZoom * dt;
     velX *= atrito;
     velY *= atrito;
+    velZoom *= atrito;
 
     acelX = 0;
     acelY = 0;
+    acelZoom = 0;
 }
 
 void Camera::posicionar() {
+    glScalef(zoom + 1, zoom + 1, zoom + 1);
     glTranslatef(0.0f, -50.0f, -250.0f);
     glRotatef(rotacaoY, 1.f, 0.f, 0.f);
     glRotatef(rotacaoX, 0.f, 1.f, 0.f);

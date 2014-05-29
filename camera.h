@@ -11,6 +11,7 @@ class Camera {
     public:
         Camera();
         void alterarDirecao(int horizontal, int vertical);
+        void alterarZoom(int direcao);
         void alterarProjecao();
         void atualizar(float dt);
         void posicionar();
@@ -21,9 +22,10 @@ class Camera {
         GLfloat acelMax;
         GLfloat atrito;
         // Variáveis
-        GLfloat acelX, acelY;
-        GLfloat velX, velY;
+        GLfloat acelX, acelY, acelZoom;
+        GLfloat velX, velY, velZoom;
         GLfloat rotacaoX, rotacaoY;
+        GLfloat zoom;
 
         void orthoPro();
         void perspPro(GLfloat fovy, GLfloat aspect, GLfloat near, GLfloat far);
