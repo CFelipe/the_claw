@@ -3,6 +3,7 @@
 #include <iostream>
 #include "formas.h"
 #include "braco.h"
+#include "Load.h"
 
 const int   SCREEN_WIDTH = 800;
 const int   SCREEN_HEIGHT = 600;
@@ -147,6 +148,9 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHT2); // define a luz 1
 	SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
 	SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
+	int braco2=Load::loadObject("junta1.obj");    
+	int base =Load::loadObject("base.obj");
+            
 	GLuint piso, esfera = 0;
         glGenTextures(1, &piso);
 	glGenTextures(1, &esfera);
@@ -291,7 +295,7 @@ int main( int argc, char* args[] ) {
             Formas::esfera(brazuca, esfera);
         glPopMatrix();
 
-            braco->renderizar();
+            braco->renderizar(base, braco2);
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();

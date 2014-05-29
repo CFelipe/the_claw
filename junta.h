@@ -10,7 +10,7 @@ class Junta {
               GLfloat acelMax = 5.00f);
         void atualizar(float dt);
         void rotacionar(int i);
-        virtual void renderizar() = 0;
+        virtual void renderizar(int braco) = 0;
 
     protected:
         // Constantes
@@ -26,25 +26,25 @@ class Junta {
 class JuntaPrismatica : public Junta {
     public:
         JuntaPrismatica() : Junta() {}
-        void renderizar();
+        void renderizar(int braco);
 };
 
 class JuntaRotacional : public Junta {
     public:
         JuntaRotacional() : Junta() {}
-        void renderizar();
+        void renderizar(int braco);
 };
 
 class JuntaTorcional : public Junta {
     public:
         JuntaTorcional() : Junta() {}
-        void renderizar();
+        void renderizar(int braco);
 };
 
 class JuntaRevolvente : public Junta {
     public:
         JuntaRevolvente() : Junta() {}
-        void renderizar();
+        void renderizar(int braco);
 };
 
 #endif

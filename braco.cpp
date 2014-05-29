@@ -21,16 +21,19 @@ void Braco::atualizar(float dt) {
 }
 
 
-void Braco::renderizar() {
+void Braco::renderizar(int base, int braco) {
     // Base
-    Formas::cilindro(25.0f, 5.0f, 16);
-    glTranslatef(0.0f, 5.0f, 0.0f);
-    Formas::cilindro(ELO_R, ELO_H, 16);
-    glTranslatef(0.0f, ELO_H, 0.0f);
-
+	//glPushMatrix();
+    //Formas::cilindro(25.0f, 5.0f, 16);
+    glTranslatef(0.0f, 0.0f, 0.0f);
+   // Formas::cilindro(ELO_R, ELO_H, 16);
+	glScalef(20,20,20);
+	glCallList(base);
+    //glTranslatef(0.0f, ELO_H, 0.0f);
+	//glPopMatrix();
     std::vector<Junta*>::iterator it;
     for(it = juntas.begin(); it != juntas.end(); ++it) {
-        (*it)->renderizar();
+        (*it)->renderizar(braco);
     }
 }
 

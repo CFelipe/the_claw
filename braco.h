@@ -8,7 +8,7 @@ class Braco {
     public:
         Braco();
         void atualizar(float dt);
-        void renderizar();
+        void renderizar(int base, int braco);
         void selecionarJunta(int i);
         void rotacionarSelecao(int i);
 

@@ -11,7 +11,7 @@ void Formas::criaTextura(SDL_Surface* image, GLuint id)
 {   
 
     glBindTexture(GL_TEXTURE_2D, id);
-	std::cout<<id<<std::endl;
+	//std::cout<<id<<std::endl;
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 	
