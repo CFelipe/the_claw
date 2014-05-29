@@ -6,8 +6,8 @@ class Formas {
         static void piramide(GLfloat base, GLfloat altura);
         static void cilindro(GLfloat raio, GLfloat altura, int lados);
         static void xyz(GLfloat tamanho, GLfloat altura);
-        static void grade(GLfloat tamanho, GLfloat espaco);
-        static void base();
+        static void grade(GLfloat tamanho, GLfloat espaco, GLfloat altura);
+        static void cubo(GLfloat lado);
 };
 
 #endif

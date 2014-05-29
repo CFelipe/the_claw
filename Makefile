@@ -1,13 +1,14 @@
 CXX = g++
-CXXFLAGS = -g -Wall `sdl2-config --cflags`
-LIBS = -lGL `sdl2-config --libs`
+CXXFLAGS = -g -Wall `sdl2-config --cflags` `pkg-config --cflags bullet`
+LIBS = -lGL `sdl2-config --libs` `pkg-config --libs bullet`
 OUT = claw
 
 OBJ = claw.o \
       formas.o \
       junta.o \
       braco.o \
-      camera.o
+      camera.o \
+      fisica.o
 
 all: $(OUT)
 

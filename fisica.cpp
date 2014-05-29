@@ -1,20 +1,2 @@
-Fisica::init() {
-    btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-
-    btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-    btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
-    btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-
-    dynamicsWorld->setGravity(btVector3(0,-10,0));
-}
-
-Fisica::remove() {
-    delete dynamicsWorld;
-    delete solver;
-    delete collisionConfiguration;
-    delete dispatcher;
-    delete broadphase;
-}
+#include <iostream>
+#include "fisica.h"

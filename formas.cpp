@@ -34,7 +34,7 @@ void Formas::xyz(GLfloat tamanho, GLfloat altura) {
     glDisable(GL_COLOR_MATERIAL);
 }
 
-void Formas::grade(GLfloat tamanho, GLfloat espaco) {
+void Formas::grade(GLfloat tamanho, GLfloat espaco, GLfloat altura) {
     glLineWidth(1);
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
@@ -46,11 +46,11 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco) {
 
         i = -tamanho;
         while(i <= tamanho + EPSILON) {
-            glVertex3f(i, 0, -tamanho);
-            glVertex3f(i, 0,  tamanho);
+            glVertex3f(i, altura, -tamanho);
+            glVertex3f(i, altura,  tamanho);
 
-            glVertex3f(-tamanho, 0, i);
-            glVertex3f( tamanho, 0, i);
+            glVertex3f(-tamanho, altura, i);
+            glVertex3f( tamanho, altura, i);
             i += espaco;
         }
     glEnd();
@@ -142,44 +142,56 @@ void Formas::piramide(GLfloat base, GLfloat altura) {
     glPopMatrix();
 }
 
-void Formas::base() {
+void Formas::cubo(float lado) {
+    glPushMatrix();
+
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+
+    glBegin(GL_POLYGON);/* f1: front */
+        glNormal3f(-lado,0.0f,0.0f);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.0f,0.0f,lado);
+        glVertex3f(lado,0.0f,lado);
+        glVertex3f(lado,0.0f,0.0f);
+    glEnd();
+    glBegin(GL_POLYGON);/* f2: bottom */
+        glNormal3f(0.0f,0.0f,-lado);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glVertex3f(lado,0.0f,0.0f);
+        glVertex3f(lado,lado,0.0f);
+        glVertex3f(0.0f,lado,0.0f);
+    glEnd();
+        glBegin(GL_POLYGON);/* f3:back */
+            glNormal3f(lado,0.0f,0.0f);
+            glVertex3f(lado,lado,0.0f);
+            glVertex3f(lado,lado,lado);
+            glVertex3f(0.0f,lado,lado);
+            glVertex3f(0.0f,lado,0.0f);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f4: top */
+            glNormal3f(0.0f,0.0f,lado);
+            glVertex3f(lado,lado,lado);
+            glVertex3f(lado,0.0f,lado);
+            glVertex3f(0.0f,0.0f,lado);
+            glVertex3f(0.0f,lado,lado);
+        glEnd();
+        glBegin(GL_POLYGON);/* f5: left */
+            glNormal3f(0.0f,lado,0.0f);
+            glVertex3f(0.0f,0.0f,0.0f);
+            glVertex3f(0.0f,lado,0.0f);
+            glVertex3f(0.0f,lado,lado);
+            glVertex3f(0.0f,0.0f,lado);
+        glEnd();
+        glBegin(GL_POLYGON);/* f6: right */
+            glNormal3f(0.0f,-lado,0.0f);
+            glVertex3f(lado,0.0f,0.0f);
+            glVertex3f(lado,0.0f,lado);
+            glVertex3f(lado,lado,lado);
+            glVertex3f(lado,lado,0.0f);
+        glEnd();
+
+    glDisable(GL_COLOR_MATERIAL);
+    glPopMatrix();
 }
-
-/*
-void load_obj(const char* filename, vector<glm::vec4> &vertices, vector<glm::vec3> &normals, vector<GLushort> &elements) {
-*/
-    /*
-    ifstream in(filename, ios::in);
-    if (!in) { cerr << "Cannot open " << filename << endl; exit(1); }
-
-    string line;
-    while (getline(in, line)) {
-        if (line.substr(0,2) == "v ") {
-        istringstream s(line.substr(2));
-        glm::vec4 v; s >> v.x; s >> v.y; s >> v.z; v.w = 1.0f;
-        vertices.push_back(v);
-        }  else if (line.substr(0,2) == "f ") {
-        istringstream s(line.substr(2));
-        GLushort a,b,c;
-        s >> a; s >> b; s >> c;
-        a--; b--; c--;
-        elements.push_back(a); elements.push_back(b); elements.push_back(c);
-        }
-        else if (line[0] == '#') {}
-        else {}
-    }
-
-    normals.resize(vertices.size(), glm::vec3(0.0, 0.0, 0.0));
-    for (int i = 0; i < elements.size(); i+=3) {
-        GLushort ia = elements[i];
-        GLushort ib = elements[i+1];
-        GLushort ic = elements[i+2];
-        glm::vec3 normal = glm::normalize(glm::cross(
-        glm::vec3(vertices[ib]) - glm::vec3(vertices[ia]),
-        glm::vec3(vertices[ic]) - glm::vec3(vertices[ia])));
-        normals[ia] = normals[ib] = normals[ic] = normal;
-    }
-    */
-/*
-}
-*/
