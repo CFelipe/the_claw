@@ -64,7 +64,7 @@ void Camera::atualizar(float dt) {
 
 void Camera::posicionar() {
     glScalef(zoom + 1, zoom + 1, zoom + 1);
-    glTranslatef(0.0f, -50.0f, -250.0f);
+    glTranslatef(0.0f, -2.0f, -25.0f);
     glRotatef(rotacaoY, 1.f, 0.f, 0.f);
     glRotatef(rotacaoX, 0.f, 1.f, 0.f);
 }
