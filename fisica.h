@@ -10,6 +10,10 @@ class Fisica {
         void atualizar(float dt);
         void remover();
 
+        btRigidBody* groundRigidBody;
+        btRigidBody* fallRigidBody;
+        btRigidBody* fallRigidBody2;
+
     private:
         btBroadphaseInterface* broadphase;
         btDefaultCollisionConfiguration* collisionConfiguration;
@@ -20,13 +24,10 @@ class Fisica {
         btDefaultMotionState* groundMotionState;
         btDefaultMotionState* fallMotionState;
         btDefaultMotionState* fallMotionState2;
+
         btCollisionShape* groundShape;
         btCollisionShape* fallShape;
         btCollisionShape* fallShape2;
-
-        btRigidBody* groundRigidBody;
-        btRigidBody* fallRigidBody;
-        btRigidBody* fallRigidBody2;
 };
 
 #endif

@@ -1,11 +1,10 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include <btBulletDynamicsCommon.h>
 #include <iostream>
 #include "formas.h"
 #include "braco.h"
 #include "camera.h"
-//#include "fisica.h"
+#include "fisica.h"
 
 const int   SCREEN_WIDTH = 800;
 const int   SCREEN_HEIGHT = 600;
@@ -121,59 +120,9 @@ int main( int argc, char* args[] ) {
         const Uint8* keys = NULL;
         keys = SDL_GetKeyboardState(NULL);
 
-        //Fisica* fisica = new Fisica();
+        Fisica* fisica = new Fisica();
         Camera* camera = new Camera();
         Braco* braco = new Braco();
-
-        //fisica->init();
-
-        btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-
-        btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-        btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-        btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
-        btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-
-        dynamicsWorld->setGravity(btVector3(0,-10,0));
-
-        btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
-
-        btCollisionShape* fallShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
-        btCollisionShape* fallShape2 = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
-
-
-        btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
-        btRigidBody::btRigidBodyConstructionInfo
-                groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-        btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-        dynamicsWorld->addRigidBody(groundRigidBody);
-
-        btDefaultMotionState* fallMotionState =
-                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0, 5, 0)));
-        btScalar mass = 1;
-        btVector3 fallInertia(0,0,0);
-        fallShape->calculateLocalInertia(mass,fallInertia);
-        btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,
-                                                                 fallMotionState,
-                                                                 fallShape,
-                                                                 fallInertia);
-        fallRigidBodyCI.m_friction = 0.7f;
-        btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
-        fallRigidBody->setLinearVelocity(btVector3(0.0f, 0.3f, 0));
-        dynamicsWorld->addRigidBody(fallRigidBody);
-
-        btDefaultMotionState* fallMotionState2 =
-                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),
-                                                     btVector3(0,10,0)));
-        btScalar mass2 = 1;
-        btVector3 fallInertia2(0,0,0);
-        fallShape2->calculateLocalInertia(mass,fallInertia);
-        btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass2,fallMotionState2,fallShape,fallInertia);
-        fallRigidBodyCI2.m_friction = 0.7f;
-        btRigidBody* fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
-        dynamicsWorld->addRigidBody(fallRigidBody2);
 
         while(!quit) {
             tempoPassado = tempoAtual;
@@ -239,10 +188,12 @@ int main( int argc, char* args[] ) {
             }
 
             if(slomo) {
-                dynamicsWorld->stepSimulation(dt * 0.3, 10);
+                fisica->atualizar(dt / 2.0f);
+
             } else {
-                dynamicsWorld->stepSimulation(dt, 10);
+                fisica->atualizar(dt);
             }
+
             camera->atualizar(dt);
             braco->atualizar(dt);
 
@@ -263,25 +214,22 @@ int main( int argc, char* args[] ) {
             //Formas::base();
 
             // Física ------------------------------------
-
             btTransform trans;
-            fallRigidBody->getMotionState()->getWorldTransform(trans);
+            fisica->fallRigidBody->getMotionState()->getWorldTransform(trans);
+
             btScalar m[16];
             trans.getOpenGLMatrix(m);
 
             glPushMatrix();
-                //glTranslatef(0.0f, 50.0f, 0.0f); //glTranslatef(-5.0f, -5.0f, -5.0f);
                 glMultMatrixf((GLfloat*)m);
 
                 Formas::cubo(1.0f);
             glPopMatrix();
 
-            fallRigidBody2->getMotionState()->getWorldTransform(trans);
+            fisica->fallRigidBody2->getMotionState()->getWorldTransform(trans);
             trans.getOpenGLMatrix(m);
 
             glPushMatrix();
-                //glTranslatef(-5.0f, -5.0f, -5.0f);
-                //glTranslatef(0.0f, 5.0f, 0.0f);
                 glMultMatrixf((GLfloat*)m);
 
                 Formas::cubo(1.0f);
@@ -301,9 +249,9 @@ int main( int argc, char* args[] ) {
 
         SDL_GL_DeleteContext(glContext);
         SDL_DestroyWindow(window);
+        fisica->remover();
     }
 
-    //fisica->remover();
     SDL_Quit();
 
     return 0;
