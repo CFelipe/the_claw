@@ -107,7 +107,6 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHT1); // define a luz 1
         glEnable(GL_LIGHT2); // define a luz 1
 
-
         bool slomo;
         bool quit;
 
@@ -143,37 +142,37 @@ int main( int argc, char* args[] ) {
 
         btCollisionShape* fallShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
         btCollisionShape* fallShape2 = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
-        //btCollisionShape* fallShape = new btSphereShape(5);
 
 
         btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
         btRigidBody::btRigidBodyConstructionInfo
                 groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-        //groundRigidBodyCI.m_friction = 3.5f;
         btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
         dynamicsWorld->addRigidBody(groundRigidBody);
-
 
         btDefaultMotionState* fallMotionState =
                 new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0, 5, 0)));
         btScalar mass = 1;
         btVector3 fallInertia(0,0,0);
         fallShape->calculateLocalInertia(mass,fallInertia);
-        btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,fallShape,fallInertia);
+        btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,
+                                                                 fallMotionState,
+                                                                 fallShape,
+                                                                 fallInertia);
         fallRigidBodyCI.m_friction = 0.7f;
         btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
         fallRigidBody->setLinearVelocity(btVector3(0.0f, 0.3f, 0));
         dynamicsWorld->addRigidBody(fallRigidBody);
 
         btDefaultMotionState* fallMotionState2 =
-                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,10,0)));
+                new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),
+                                                     btVector3(0,10,0)));
         btScalar mass2 = 1;
         btVector3 fallInertia2(0,0,0);
         fallShape2->calculateLocalInertia(mass,fallInertia);
         btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass2,fallMotionState2,fallShape,fallInertia);
         fallRigidBodyCI2.m_friction = 0.7f;
         btRigidBody* fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
-        //fallRigidBody2->setLinearVelocity(btVector3(10.0f,5.0f,0));
         dynamicsWorld->addRigidBody(fallRigidBody2);
 
         while(!quit) {

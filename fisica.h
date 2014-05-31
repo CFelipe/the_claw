@@ -19,11 +19,14 @@ class Fisica {
 
         btDefaultMotionState* groundMotionState;
         btDefaultMotionState* fallMotionState;
+        btDefaultMotionState* fallMotionState2;
         btCollisionShape* groundShape;
         btCollisionShape* fallShape;
+        btCollisionShape* fallShape2;
 
         btRigidBody* groundRigidBody;
         btRigidBody* fallRigidBody;
+        btRigidBody* fallRigidBody2;
 };
 
 #endif
