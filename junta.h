@@ -2,49 +2,61 @@
 #define JUNTA_H
 
 #include <SDL_opengl.h>
+#include "Load.h"
 
 class Junta {
     public:
         Junta(GLfloat rotacaoMax = 45.0f,
+              GLfloat rotacaoMin = 0.0f,
+              GLfloat rotacaoInicial = 0.0f,
               GLfloat atrito = 0.85f,
               GLfloat acelMax = 5.00f);
         void atualizar(float dt);
         void rotacionar(int i);
-        virtual void renderizar(int braco) = 0;
+        virtual void renderizar() = 0;
 
     protected:
         // Constantes
         GLfloat rotacaoMax;
+        GLfloat rotacaoMin;
         GLfloat acelMax;
         GLfloat atrito;
         // Variáveis
         GLfloat acel;
         GLfloat vel;
         GLfloat rotacao;
+
+        int modelo;
 };
 
-class JuntaPrismatica : public Junta {
+class BaseTorcional : public Junta {
     public:
-        JuntaPrismatica() : Junta() {}
-        void renderizar(int braco);
+        BaseTorcional();
+        void renderizar();
 };
 
-class JuntaRotacional : public Junta {
+class JuntaRotacional1 : public Junta {
     public:
-        JuntaRotacional() : Junta() {}
-        void renderizar(int braco);
+        JuntaRotacional1();
+        void renderizar();
+};
+
+class JuntaRotacional2 : public Junta {
+    public:
+        JuntaRotacional2();
+        void renderizar();
+};
+
+class JuntaRotacional3 : public Junta {
+    public:
+        JuntaRotacional3();
+        void renderizar();
 };
 
 class JuntaTorcional : public Junta {
     public:
-        JuntaTorcional() : Junta() {}
-        void renderizar(int braco);
-};
-
-class JuntaRevolvente : public Junta {
-    public:
-        JuntaRevolvente() : Junta() {}
-        void renderizar(int braco);
+        JuntaTorcional();
+        void renderizar();
 };
 
 #endif

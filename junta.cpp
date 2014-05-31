@@ -1,19 +1,17 @@
 #include "junta.h"
-#include "formas.h"
+#include "Load.h"
 #include <iostream>
 
-const GLfloat PIR_W = 5.0f;
-const GLfloat PIR_H = 1.0f;
-const GLfloat ELO_H = 15.0f;
-const GLfloat ELO_R = 2.0f;
-
 Junta::Junta(GLfloat rotacaoMax,
+             GLfloat rotacaoMin,
+             GLfloat rotacaoInicial,
              GLfloat atrito,
              GLfloat acelMax) {
     this->rotacaoMax = rotacaoMax;
+    this->rotacaoMin = rotacaoMin;
+    this->rotacao = rotacaoInicial;
     this->atrito = atrito;
     this->acelMax = acelMax;
-    this->rotacao = 0;
     this->vel = 0;
     this->acel= 0;
 }
@@ -27,8 +25,8 @@ void Junta::atualizar(float dt) {
         rotacao = rotacaoMax;
         acel = 0;
         vel = 0;
-    } else if(rotacao < -rotacaoMax) {
-        rotacao = -rotacaoMax;
+    } else if(rotacao < rotacaoMin) {
+        rotacao = rotacaoMin;
         acel = 0;
         vel = 0;
     }
@@ -44,55 +42,54 @@ void Junta::rotacionar(int i) {
     }
 }
 
-// Prismática ---------------------
+// Juntas -------------------------
 
-void JuntaPrismatica::renderizar(int braco) {
-    //Formas::piramide(PIR_W, PIR_H);
-    // TODO
+BaseTorcional::BaseTorcional() : Junta(90.0f, -90.0f) {
+    modelo = Load::loadObject("modelos/base_junta.obj");
 }
 
-// Rotacional ---------------------
-
-void JuntaRotacional::renderizar(int braco) {
-
-    glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
-   // Formas::piramide(PIR_W, PIR_H);
-
-    glTranslatef(0.0f, PIR_H, 0.0f);
-	glCallList(braco);
-    //Formas::cilindro(ELO_R, ELO_H, 16);
-   // glTranslatef(0.0f, ELO_H, 0.0f);
-
-}
-
-// Torcional ----------------------
-
-void JuntaTorcional::renderizar(int braco) {
-
-  glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
-    //Formas::piramide(PIR_W, PIR_H);
-	
-   // glTranslatef(0.0f, PIR_H, 0.0f);
-      glTranslatef(0.0f, 0, -3.0f);
-
-	glCallList(braco);
-    //Formas::cilindro(ELO_R, ELO_H, 16);
-    //glTranslatef(0.0f, ELO_H, 0.0f);
-
-
-}
-
-// Revolvente ---------------------
-
-void JuntaRevolvente::renderizar(int braco) {
-//glScalef(20,20,20);
-      
-glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+void BaseTorcional::renderizar() {
     glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
-    //Formas::piramide(PIR_W, PIR_H);
-    glTranslatef(0.0f, PIR_H, 0.0f);
+    glCallList(modelo);
+    glTranslatef(0.0f, 1.0f, 0.0f);
+}
 
-	glCallList(braco);
-    //Formas::cilindro(ELO_R, ELO_H, 16);
-    glTranslatef(0.0f, ELO_H, 0.0f);
+JuntaRotacional1::JuntaRotacional1() : Junta(60.0f, 30.0f, 30.0f) {
+    modelo = Load::loadObject("modelos/junta_r1.obj");
+}
+
+void JuntaRotacional1::renderizar() {
+    glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
+    glCallList(modelo);
+    glTranslatef(0.0f, 0.0f, -3.0f);
+}
+
+JuntaRotacional2::JuntaRotacional2() : Junta(0.0f, -30.0f, 0.0f) {
+    modelo = Load::loadObject("modelos/junta_r2.obj");
+}
+
+void JuntaRotacional2::renderizar() {
+    glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
+    glCallList(modelo);
+    glTranslatef(0.0f, 0.0f, -3.0f);
+}
+
+JuntaRotacional3::JuntaRotacional3() : Junta(45.0f, -45.0f) {
+    modelo = Load::loadObject("modelos/junta_r3.obj");
+}
+
+void JuntaRotacional3::renderizar() {
+    glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
+    glCallList(modelo);
+    glTranslatef(0.3f, -0.6f, 0.0f);
+}
+
+JuntaTorcional::JuntaTorcional() : Junta(90.0f, -90.0f) {
+    modelo = Load::loadObject("modelos/junta_t.obj");
+}
+
+void JuntaTorcional::renderizar() {
+    glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
+    glCallList(modelo);
+    glTranslatef(0.0f, 0.0f, 0.0f);
 }

@@ -8,13 +8,14 @@ class Braco {
     public:
         Braco();
         void atualizar(float dt);
-        void renderizar(int base, int braco);
+        void renderizar();
         void selecionarJunta(int i);
         void rotacionarSelecao(int i);
 
     private:
         std::vector<Junta*> juntas;
         unsigned int juntaSelecionada;
+        int modeloBase;
 };
 
 #endif

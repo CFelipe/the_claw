@@ -3,7 +3,6 @@
 #include <iostream>
 #include "formas.h"
 #include "braco.h"
-#include "Load.h"
 
 const int   SCREEN_WIDTH = 800;
 const int   SCREEN_HEIGHT = 600;
@@ -69,13 +68,13 @@ void iluminacao(GLfloat x, GLfloat y){
         posicaoLuz[1][2] = -50.0;
         posicaoLuz[1][3] = 1.0;
 
-	
-	posicaoLuz[2][0] = 0;
+
+        posicaoLuz[2][0] = 0;
         posicaoLuz[2][1] = 90.0;
         posicaoLuz[2][2] = 0;
         posicaoLuz[2][3] = 1.0;
 
-	
+
         /*glPushMatrix();
             glTranslatef(posicaoLuz[0][0], posicaoLuz[0][1], posicaoLuz[0][2]);
             Formas::piramide(10.0f, 20.0f);
@@ -86,13 +85,13 @@ void iluminacao(GLfloat x, GLfloat y){
             Formas::piramide(10.0f, 20.0f);
         glPopMatrix();
 
-	
+
         glPushMatrix();
             glTranslatef(posicaoLuz[2][0], posicaoLuz[2][1], posicaoLuz[2][2]);
             Formas::piramide(10.0f, 20.0f);
         glPopMatrix();
-	
-	*/
+
+        */
         glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 30); // componente especular do material
 
         //glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente);
@@ -107,12 +106,12 @@ void iluminacao(GLfloat x, GLfloat y){
         glLightfv(GL_LIGHT1, GL_SPECULAR, especular[1]);
         glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz[1]);
 
-	
+
         glLightfv(GL_LIGHT2, GL_AMBIENT, ambiente);
         glLightfv(GL_LIGHT2, GL_DIFFUSE, difusao[1]);
         glLightfv(GL_LIGHT2, GL_SPECULAR, especular[1]);
         glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz[2]);
-	
+
 }
 
 int main( int argc, char* args[] ) {
@@ -139,21 +138,21 @@ int main( int argc, char* args[] ) {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_2D);
 
         glShadeModel(GL_SMOOTH);
         glEnable(GL_LIGHTING); // liga a luz
         glEnable(GL_LIGHT0); // define a luz 0
         glEnable(GL_LIGHT1); // define a luz 1
         glEnable(GL_LIGHT2); // define a luz 1
-	SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
-	SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
-	int braco2=Load::loadObject("junta1.obj");    
-	int base =Load::loadObject("base.obj");
-            
-	GLuint piso, esfera = 0;
+
+        SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
+        SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
+
+        GLuint piso, esfera = 0;
         glGenTextures(1, &piso);
-	glGenTextures(1, &esfera);
+        glGenTextures(1, &esfera);
+
         bool quit, persp;
         float x_mult, y_mult;
         GLfloat x, y, x_vel, y_vel, x_acel, y_acel;
@@ -288,14 +287,12 @@ int main( int argc, char* args[] ) {
 
             Formas::xyz(100.0f, 1.0f);
 
-	    
-       
-	 glPushMatrix();
-            glTranslatef(50, 11, 50);
-            Formas::esfera(brazuca, esfera);
-        glPopMatrix();
+            glPushMatrix();
+                glTranslatef(50, 11, 50);
+                Formas::esfera(brazuca, esfera);
+            glPopMatrix();
 
-            braco->renderizar(base, braco2);
+            braco->renderizar();
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
@@ -310,15 +307,14 @@ int main( int argc, char* args[] ) {
 
             SDL_GL_SwapWindow(window);
         }
-	
-	SDL_FreeSurface(textura);
-	SDL_FreeSurface(brazuca); 
+
+        SDL_FreeSurface(textura);
+        SDL_FreeSurface(brazuca);
         SDL_GL_DeleteContext(glContext);
         SDL_DestroyWindow(window);
- 
+
     }
 
-	glDisable(GL_TEXTURE_2D);
     SDL_Quit();
 
     return 0;

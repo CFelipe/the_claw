@@ -1,30 +1,20 @@
-
-    //#include <windows.h>
-   #include <SDL.h>
-#include "SDL/SDL.h"
-#include "SDL.h"
+#include <SDL.h>
 #include <SDL_opengl.h>
-#include <SDL/SDL.h>
-#include <GL/glx.h>
-//#include <SDL/SDL.h> //check your include folder, it may be just SDL.h
 #include "Load.h"
-    #include <GL/gl.h>
-    #include <GL/glu.h>
-    #include <cstdlib>
-    #include <vector>
-    #include <string>
-    #include <algorithm>
-    #include <fstream>
-    #include <cstdio>
-    #include <iostream>
-     
 
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <fstream>
+#include <iostream>
 
     struct coordinate{
             float x,y,z;
             coordinate(float a,float b,float c) : x(a),y(b),z(c) {};
     };
-     
+
     //for faces, it can contain triangles and quads as well, the four variable contain which is that
     struct face{
             int facenum;
@@ -44,8 +34,8 @@
                     four=true;
             }
     };
-     
-    
+
+
     int Load::loadObject(const char* filename)
     {
             std::vector<std::string*> coord;        //read every single line of the obj file as a string
@@ -66,7 +56,7 @@
                     coord.push_back(new std::string(buf));
             }
             //go through all of the elements of coord, and decide what kind of element is that
-            for(int i=0;i<coord.size();i++)
+            for(unsigned int i=0;i<coord.size();i++)
             {
                     if(coord[i]->c_str()[0]=='#')   //if it is a comment (the first character is #)
                             continue;       //we don't care about that
@@ -79,7 +69,7 @@
                     {
                             float tmpx,tmpy,tmpz;   //do the same thing
                             sscanf(coord[i]->c_str(),"vn %f %f %f",&tmpx,&tmpy,&tmpz);
-                            normals.push_back(new coordinate(tmpx,tmpy,tmpz));     
+                            normals.push_back(new coordinate(tmpx,tmpy,tmpz));
                     }else if(coord[i]->c_str()[0]=='f')     //if face
                     {
                             int a,b,c,d,e;
@@ -97,7 +87,7 @@
             int num;        //the id for the list
             num=glGenLists(1);      //generate a uniqe
             glNewList(num,GL_COMPILE);      //and create it
-            for(int i=0;i<faces.size();i++)
+            for(unsigned int i=0;i<faces.size();i++)
             {
                     if(faces[i]->four)      //if it's a quad draw a quad
                     {
@@ -122,13 +112,13 @@
             }
             glEndList();
             //delete everything to avoid memory leaks
-            for(int i=0;i<coord.size();i++)
+            for(unsigned int i=0;i<coord.size();i++)
                     delete coord[i];
-            for(int i=0;i<faces.size();i++)
+            for(unsigned int i=0;i<faces.size();i++)
                     delete faces[i];
-            for(int i=0;i<normals.size();i++)
+            for(unsigned int i=0;i<normals.size();i++)
                     delete normals[i];
-            for(int i=0;i<vertex.size();i++)
+            for(unsigned int i=0;i<vertex.size();i++)
                     delete vertex[i];
             return num;     //return with the id
     }

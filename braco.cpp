@@ -1,16 +1,16 @@
 #include "braco.h"
-#include "formas.h"
-#include <iostream>
-
-const GLfloat ELO_H = 15.0f;
-const GLfloat ELO_R = 2.0f;
+#include "Load.h"
 
 Braco::Braco() {
+    modeloBase = Load::loadObject("modelos/base.obj");
+
     juntaSelecionada = 0;
 
-    juntas.push_back(new JuntaRotacional());
+    juntas.push_back(new BaseTorcional());
+    juntas.push_back(new JuntaRotacional1());
+    juntas.push_back(new JuntaRotacional2());
+    juntas.push_back(new JuntaRotacional3());
     juntas.push_back(new JuntaTorcional());
-    juntas.push_back(new JuntaRevolvente());
 }
 
 void Braco::atualizar(float dt) {
@@ -20,21 +20,27 @@ void Braco::atualizar(float dt) {
     }
 }
 
-
-void Braco::renderizar(int base, int braco) {
-    // Base
-	//glPushMatrix();
-    //Formas::cilindro(25.0f, 5.0f, 16);
+void Braco::renderizar() {
     glTranslatef(0.0f, 0.0f, 0.0f);
-   // Formas::cilindro(ELO_R, ELO_H, 16);
-	glScalef(20,20,20);
-	glCallList(base);
-    //glTranslatef(0.0f, ELO_H, 0.0f);
-	//glPopMatrix();
+
+    glCallList(modeloBase);
+
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glColor3f(0.0f, 1.0f, 0.0f);
+
     std::vector<Junta*>::iterator it;
     for(it = juntas.begin(); it != juntas.end(); ++it) {
-        (*it)->renderizar(braco);
+        if((it - juntas.begin()) == juntaSelecionada) {
+            glColor3f(0.0f, 1.0f, 0.0f);
+        } else {
+            glColor3f(1.0f, 1.0f, 0.0f);
+        }
+
+        (*it)->renderizar();
     }
+
+    glDisable(GL_COLOR_MATERIAL);
 }
 
 void Braco::selecionarJunta(int i) {
