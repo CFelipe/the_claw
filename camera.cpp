@@ -78,9 +78,9 @@ void Camera::projetar() {
 }
 
 void Camera::orthoPro() {
-    glOrtho(-70.0f, 70.0f,    // L, R
-            -70.0f, 70.0f,    // B, T
-            -1000, 1000);     // N, F
+    glOrtho(-10.0f, 10.0f,    // L, R
+            -10.0f, 10.0f,    // B, T
+            -500, 500);     // N, F
 }
 
 void Camera::perspPro(GLfloat fovy, GLfloat aspect, GLfloat near, GLfloat far) {

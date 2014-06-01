@@ -20,7 +20,6 @@ Fisica::Fisica() {
     groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
 
     fallShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
-    fallShape2 = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
 
     groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),
                                                              btVector3(0,-1,0)));
@@ -42,23 +41,29 @@ Fisica::Fisica() {
 
     fallRigidBodyCI.m_friction = 0.7f;
     fallRigidBody = new btRigidBody(fallRigidBodyCI);
-    fallRigidBody->setLinearVelocity(btVector3(0.0f, 0.3f, 0));
+    fallRigidBody->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f));
     dynamicsWorld->addRigidBody(fallRigidBody);
 
     fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0.5f,0,1),
-                                                            btVector3(6,3.5f,2)));
-    btScalar mass2 = 1;
-    btVector3 fallInertia2(0,0,0);
-    fallShape2->calculateLocalInertia(mass,fallInertia);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass2,fallMotionState2,fallShape,fallInertia);
+                                                            btVector3(6,0.5f,2)));
+
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape,fallInertia);
     fallRigidBodyCI2.m_friction = 0.7f;
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
 
     dynamicsWorld->addRigidBody(fallRigidBody2);
+
+    fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0.8f,0,1),
+                                                            btVector3(6,0.5f,5)));
+
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState3,fallShape,fallInertia);
+    fallRigidBodyCI3.m_friction = 0.7f;
+    fallRigidBody3 = new btRigidBody(fallRigidBodyCI3);
+
+    dynamicsWorld->addRigidBody(fallRigidBody3);
 }
 
 void Fisica::atualizar(float dt) {
-    //std::cout << glmatrix[0] << std::endl;
     dynamicsWorld->stepSimulation(dt, 10);
 }
 
@@ -71,9 +76,11 @@ void Fisica::remover() {
     delete fallRigidBody2->getMotionState();
     delete fallRigidBody2;
 
+    dynamicsWorld->removeRigidBody(fallRigidBody3);
+    delete fallRigidBody3->getMotionState();
+    delete fallRigidBody3;
+
     dynamicsWorld->removeRigidBody(groundRigidBody);
-    delete groundRigidBody->getMotionState();
-    delete groundRigidBody;
 
     delete fallShape;
 

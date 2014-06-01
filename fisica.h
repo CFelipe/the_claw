@@ -13,6 +13,7 @@ class Fisica {
         btRigidBody* groundRigidBody;
         btRigidBody* fallRigidBody;
         btRigidBody* fallRigidBody2;
+        btRigidBody* fallRigidBody3;
 
     private:
         btBroadphaseInterface* broadphase;
@@ -24,10 +25,12 @@ class Fisica {
         btDefaultMotionState* groundMotionState;
         btDefaultMotionState* fallMotionState;
         btDefaultMotionState* fallMotionState2;
+        btDefaultMotionState* fallMotionState3;
 
         btCollisionShape* groundShape;
         btCollisionShape* fallShape;
         btCollisionShape* fallShape2;
+        btCollisionShape* fallShape3;
 };
 
 #endif

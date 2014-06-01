@@ -114,7 +114,6 @@ int main( int argc, char* args[] ) {
         glGenTextures(1, &piso);
         glGenTextures(1, &esfera);
 
-        GLfloat glmatrix[16] = {0};
         bool quit;
 
         Uint32 tempoAtual, tempoPassado;
@@ -216,9 +215,10 @@ int main( int argc, char* args[] ) {
 
             glPushMatrix();
                 braco->renderizar();
-                glGetFloatv(GL_MODELVIEW_MATRIX, glmatrix);
                 Formas::cubo(1.0f);
             glPopMatrix();
+
+            std::cout << braco->posicaoPunho()[0] << std::endl;
 
             glColor3f(1.0, 0.0, 0.0);
 
@@ -243,6 +243,16 @@ int main( int argc, char* args[] ) {
 
                 Formas::cubo(1.0f);
             glPopMatrix();
+
+            fisica->fallRigidBody3->getMotionState()->getWorldTransform(trans);
+            trans.getOpenGLMatrix(m);
+
+            glPushMatrix();
+                glMultMatrixf((GLfloat*)m);
+
+                Formas::cubo(1.0f);
+            glPopMatrix();
+
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();

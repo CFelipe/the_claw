@@ -56,6 +56,8 @@ void Braco::rotacionarSelecao(int i) {
 }
 
 float* Braco::posicaoPunho() {
+    float m[16];
+
     glPushMatrix();
         glLoadIdentity();
         glRotatef(juntas.at(0)->rotacao, 0.0f, 1.0f, 0.0f);
@@ -68,5 +70,8 @@ float* Braco::posicaoPunho() {
         glTranslatef(0.3f, -0.6f, 0.0f);
         glRotatef(juntas.at(4)->rotacao, 0.0f, 1.0f, 0.0f);
         glTranslatef(0.0f, -0.9f, 0.0f);
+        glGetFloatv(GL_MODELVIEW_MATRIX, m);
     glPopMatrix();
+
+    return m;
 }
