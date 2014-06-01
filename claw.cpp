@@ -22,7 +22,7 @@ void iluminacao() {
         posicaoLuz[0][0] = 10.0f;
         posicaoLuz[0][1] = 5.0f;
         posicaoLuz[0][2] = 0.0f;
-        posicaoLuz[0][3] = 1.0;
+        posicaoLuz[0][3] = 0.0;
 
         difusao[1][0] = 0.7;
         difusao[1][1] = 0.7;
