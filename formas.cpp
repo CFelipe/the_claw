@@ -37,6 +37,7 @@ void Formas::esfera(GLfloat raio, SDL_Surface *textura, GLuint id){
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
+    glColor3f(1.0, 1.0, 1.0);
     criaTextura(textura, id);
     GLUquadricObj *q =  gluNewQuadric();
     gluQuadricNormals(q, GLU_SMOOTH);
@@ -80,13 +81,15 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint
     glEnable(GL_TEXTURE_2D);
 
     glLineWidth(1);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+    
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
-    glColor3f(0, 1.0, 0);
+    glColor3f(0.0, 1.0, 0.0);
     glNormal3f(0,1,0);
     criaTextura(textura, id);
     glBegin(GL_QUADS);
     glTexCoord2i(0,0);
+
     glVertex3f(-256, 0, -256);
 
     glTexCoord2i(0,20);
@@ -101,6 +104,7 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint
 
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_TEXTURE_2D);
+
 }
 
 void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {

@@ -5,74 +5,114 @@
 #include "braco.h"
 #include "camera.h"
 #include "fisica.h"
+#include "iluminacao.h"
 
 const int   SCREEN_WIDTH = 800;
 const int   SCREEN_HEIGHT = 600;
 
-GLfloat ambiente[4];
-GLfloat difusao[3][4];  // degradê
-GLfloat especular[3][4]; // brilho
-GLfloat posicaoLuz[3][4];
+GLfloat ambiente[4][4];
+GLfloat difusao[4][4];  // degradê
+GLfloat especular[4][4]; // brilho
+GLfloat posicaoLuz[4][4];
 
 void iluminacao() {
-    ambiente[0] = 0.2;
-    ambiente[1] = 0.2;
-    ambiente[2] = 0.2;
-    ambiente[3] = 1.0;
-
-    difusao[0][0] = 0.7;
-    difusao[0][1] = 0.7;
-    difusao[0][2] = 0.7;
-    difusao[0][3] = 1.0;
-
-    especular[0][0] = 0.8;
-    especular[0][1] = 0.8;
-    especular[0][2] = 0.8;
-    especular[0][3] = 0.0;
-
-    posicaoLuz[0][0] = 50.0f;
-    posicaoLuz[0][1] = 50.0f;
-    posicaoLuz[0][2] = 50.0f;
-    posicaoLuz[0][3] = 1.0;
-
-    difusao[1][0] = 0.7;
-    difusao[1][1] = 0.7;
-    difusao[1][2] = 0.7;
-    difusao[1][3] = 1.0;
-
-    especular[1][0] = 0.8;
-    especular[1][1] = 0.8;
-    especular[1][2] = 0.8;
-    especular[1][3] = 1.0;
-
-    posicaoLuz[1][0] = -50.0;
-    posicaoLuz[1][1] = 50.0;
-    posicaoLuz[1][2] = -50.0;
-    posicaoLuz[1][3] = 1.0;
-
-    posicaoLuz[2][0] = 0;
-    posicaoLuz[2][1] = 90.0;
-    posicaoLuz[2][2] = 0;
-    posicaoLuz[2][3] = 1.0;
-    glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 30); // componente especular do material
-
-    //glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente);
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao[0]);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, especular[0]);
-    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz[0]);
-
-    glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, difusao[1]);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, especular[1]);
-    glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz[1]);
 
 
-    glLightfv(GL_LIGHT2, GL_AMBIENT, ambiente);
-    glLightfv(GL_LIGHT2, GL_DIFFUSE, difusao[1]);
-    glLightfv(GL_LIGHT2, GL_SPECULAR, especular[1]);
-    glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz[2]);
+
+        posicaoLuz[0][0] = 10.0f;
+        posicaoLuz[0][1] = 5.0f;
+        posicaoLuz[0][2] = 0.0f;
+        posicaoLuz[0][3] = 1.0;
+
+        difusao[1][0] = 0.7;
+        difusao[1][1] = 0.7;
+        difusao[1][2] = 0.7;
+        difusao[1][3] = 1.0;
+
+        especular[1][0] = 0.8;
+        especular[1][1] = 0.8;
+        especular[1][2] = 0.8;
+        especular[1][3] = 1.0;
+
+        posicaoLuz[1][0] = -10.0;
+        posicaoLuz[1][1] = 5.0;
+        posicaoLuz[1][2] = 00.0;
+        posicaoLuz[1][3] = 1.0;
+
+	posicaoLuz[3][0] = -20.0;
+        posicaoLuz[3][1] = 5.0;
+        posicaoLuz[3][2] = 0.0;
+        posicaoLuz[3][3] = 1.0;
+
+	
+	
+        posicaoLuz[2][3] = 1.0;
+	
+	difusao[2][0] = 10.0;
+        difusao[2][1] = 10.0;
+        difusao[2][2] = 10.0;
+        difusao[2][3] = 1.0;
+
+	difusao[3][0] = 0.5;
+        difusao[3][1] = 0.5;
+        difusao[3][2] = 0.5;
+        difusao[3][3] = 1.0;
+
+
+	ambiente[1][0] = 0.3;
+        ambiente[1][1] = 0.3;
+        ambiente[1][2] = 0.3;
+        ambiente[1][3] = 0.3;
+	
+        /*glPushMatrix();
+            glTranslatef(posicaoLuz[0][0], posicaoLuz[0][1], posicaoLuz[0][2]);
+            Formas::piramide(1.0f, 2.0f);
+        glPopMatrix();
+
+        glPushMatrix();
+            glTranslatef(posicaoLuz[1][0], posicaoLuz[1][1], posicaoLuz[1][2]);
+            Formas::piramide(1.0f, 2.0f);
+        glPopMatrix();
+
+
+        glPushMatrix();
+            glTranslatef(posicaoLuz[3][0], posicaoLuz[3][1], posicaoLuz[3][2]);
+            Formas::piramide(0.5f, 1.0f);
+        glPopMatrix();
+	*/
+	
+
+	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambiente[1]);
+	//glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,especular[1]);
+        //glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 20); // componente especular do material
+//
+      // glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente[1]);
+
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente[1]);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao[1]);
+       	glLightfv(GL_LIGHT0, GL_SPECULAR, especular[1]);
+        glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz[0]);
+
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente[1]);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, difusao[1]);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, especular[1]);
+        glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz[1]);
+
+        //glLightfv(GL_LIGHT3, GL_AMBIENT, ambiente[1]);
+        glLightfv(GL_LIGHT3, GL_DIFFUSE, difusao[3]);
+        glLightfv(GL_LIGHT3, GL_SPECULAR, especular[1]);
+        glLightfv(GL_LIGHT3, GL_POSITION, posicaoLuz[2]);
+
+	
+
+
+       // glLightfv(GL_LIGHT2, GL_AMBIENT, ambiente[0]);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, difusao[2]);
+       glLightfv(GL_LIGHT2, GL_SPECULAR, especular[1]);
+	glLightf(GL_LIGHT2, GL_SPOT_EXPONENT,0);
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF,65);
+
+
 }
 
 int main( int argc, char* args[] ) {
@@ -105,8 +145,10 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHTING); // liga a luz
         glEnable(GL_LIGHT0); // define a luz 0
         glEnable(GL_LIGHT1); // define a luz 1
-        glEnable(GL_LIGHT2); // define a luz 1
+	glEnable(GL_LIGHT3); // define a luz 1
 
+       glEnable(GL_LIGHT2); // define a luz 1
+	
         SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
         SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
 
@@ -209,13 +251,17 @@ int main( int argc, char* args[] ) {
             Formas::xyz(100.0f, 0.0f);
 
             glPushMatrix();
-                glTranslatef(5, 0.3, 5);
-                Formas::esfera(0.3, brazuca, esfera);
+                glTranslatef(4, 0.5, -3);
+                Formas::esfera(0.6, brazuca, esfera);
             glPopMatrix();
 
             glPushMatrix();
                 braco->renderizar();
-                Formas::cubo(1.0f);
+		posicaoLuz[2][0] = 0;
+		posicaoLuz[2][1] = 0;
+		posicaoLuz[2][2] = 0;	
+		glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz[2]);
+		 //  Formas::cubo(1.0f);
             glPopMatrix();
 
             std::cout << braco->posicaoPunho()[0] << std::endl;
@@ -237,6 +283,7 @@ int main( int argc, char* args[] ) {
 
             fisica->fallRigidBody2->getMotionState()->getWorldTransform(trans);
             trans.getOpenGLMatrix(m);
+
 
             glPushMatrix();
                 glMultMatrixf((GLfloat*)m);
