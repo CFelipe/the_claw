@@ -1,4 +1,7 @@
 #include <SDL_opengl.h>
+#include <stdio.h>
+#include <string>
+#include <vector>
 #include <math.h>
 #include <iostream>
 #include <GL/gl.h>
@@ -28,21 +31,18 @@ void Formas::criaTextura(SDL_Surface* image, GLuint id)
 }
 
 
-void Formas::esfera(SDL_Surface *textura, GLuint id){
-
+void Formas::esfera(GLfloat raio, SDL_Surface *textura, GLuint id){
     glEnable(GL_TEXTURE_2D);
 
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
-
-    glColor3f(1.0, 1.0, 1.0);
 
     criaTextura(textura, id);
     GLUquadricObj *q =  gluNewQuadric();
     gluQuadricNormals(q, GLU_SMOOTH);
     gluQuadricTexture(q, GL_TRUE);
 
-    gluSphere(q,1,15,15);
+    gluSphere(q,raio,15,15);
 
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_TEXTURE_2D);
@@ -89,33 +89,18 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint
     glTexCoord2i(0,0);
     glVertex3f(-256, 0, -256);
 
-    glTexCoord2i(0,2);
+    glTexCoord2i(0,20);
     glVertex3f(-256, 0, 256);
 
-    glTexCoord2i(2,2);
+    glTexCoord2i(20,20);
     glVertex3f(256, 0, 256);
 
-    glTexCoord2i(2,0);
+    glTexCoord2i(20,0);
     glVertex3f(256, 0, -256);
     glEnd();
 
-
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_TEXTURE_2D);
-    /*glBegin(GL_LINES);
-
-        float i;
-
-        i = -tamanho;
-        while(i <= tamanho + EPSILON) {
-            glVertex3f(i, 0, -tamanho);
-            glVertex3f(i, 0,  tamanho);
-
-            glVertex3f(-tamanho, 0, i);
-            glVertex3f( tamanho, 0, i);
-            i += espaco;
-        }
-    glEnd();*/
 }
 
 void Formas::cilindro(GLfloat raio, GLfloat altura, int lados) {
@@ -198,6 +183,61 @@ void Formas::piramide(GLfloat base, GLfloat altura) {
     glNormal3f(base,0,base);
     glVertex3f(base,0,base);
     glEnd();
+
+    glDisable(GL_COLOR_MATERIAL);
+    glPopMatrix();
+}
+
+void Formas::cubo(float lado) {
+    glPushMatrix();
+    glTranslatef(-lado * 0.5f, -lado * 0.5f, -lado * 0.5f);
+
+    glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+
+    glBegin(GL_POLYGON);/* f1: front */
+        glNormal3f(-lado,0.0f,0.0f);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.0f,0.0f,lado);
+        glVertex3f(lado,0.0f,lado);
+        glVertex3f(lado,0.0f,0.0f);
+    glEnd();
+    glBegin(GL_POLYGON);/* f2: bottom */
+        glNormal3f(0.0f,0.0f,-lado);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glVertex3f(lado,0.0f,0.0f);
+        glVertex3f(lado,lado,0.0f);
+        glVertex3f(0.0f,lado,0.0f);
+    glEnd();
+        glBegin(GL_POLYGON);/* f3:back */
+            glNormal3f(lado,0.0f,0.0f);
+            glVertex3f(lado,lado,0.0f);
+            glVertex3f(lado,lado,lado);
+            glVertex3f(0.0f,lado,lado);
+            glVertex3f(0.0f,lado,0.0f);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f4: top */
+            glNormal3f(0.0f,0.0f,lado);
+            glVertex3f(lado,lado,lado);
+            glVertex3f(lado,0.0f,lado);
+            glVertex3f(0.0f,0.0f,lado);
+            glVertex3f(0.0f,lado,lado);
+        glEnd();
+        glBegin(GL_POLYGON);/* f5: left */
+            glNormal3f(0.0f,lado,0.0f);
+            glVertex3f(0.0f,0.0f,0.0f);
+            glVertex3f(0.0f,lado,0.0f);
+            glVertex3f(0.0f,lado,lado);
+            glVertex3f(0.0f,0.0f,lado);
+        glEnd();
+        glBegin(GL_POLYGON);/* f6: right */
+            glNormal3f(0.0f,-lado,0.0f);
+            glVertex3f(lado,0.0f,0.0f);
+            glVertex3f(lado,0.0f,lado);
+            glVertex3f(lado,lado,lado);
+            glVertex3f(lado,lado,0.0f);
+        glEnd();
 
     glDisable(GL_COLOR_MATERIAL);
     glPopMatrix();

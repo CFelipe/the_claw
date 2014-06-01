@@ -12,8 +12,8 @@ Junta::Junta(GLfloat rotacaoMax,
     this->rotacao = rotacaoInicial;
     this->atrito = atrito;
     this->acelMax = acelMax;
-    this->vel = 0;
-    this->acel= 0;
+    this->vel = 0.0f;
+    this->acel= 0.0f;
 }
 
 void Junta::atualizar(float dt) {
@@ -54,7 +54,7 @@ void BaseTorcional::renderizar() {
     glTranslatef(0.0f, 1.0f, 0.0f);
 }
 
-JuntaRotacional1::JuntaRotacional1() : Junta(60.0f, 30.0f, 30.0f) {
+JuntaRotacional1::JuntaRotacional1() : Junta(60.0f, 0.0f, 30.0f) {
     modelo = Load::loadObject("modelos/junta_r1.obj");
 }
 
@@ -91,5 +91,5 @@ JuntaTorcional::JuntaTorcional() : Junta(90.0f, -90.0f) {
 void JuntaTorcional::renderizar() {
     glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
     glCallList(modelo);
-    glTranslatef(0.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, -0.9f, 0.0f);
 }

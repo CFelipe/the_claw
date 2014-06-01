@@ -14,6 +14,7 @@ class Junta {
         void atualizar(float dt);
         void rotacionar(int i);
         virtual void renderizar() = 0;
+        GLfloat rotacao;
 
     protected:
         // Constantes
@@ -24,7 +25,6 @@ class Junta {
         // Variáveis
         GLfloat acel;
         GLfloat vel;
-        GLfloat rotacao;
 
         int modelo;
 };

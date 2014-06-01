@@ -11,8 +11,9 @@ class Formas {
         static void cilindro(GLfloat raio, GLfloat altura, int lados);
         static void xyz(GLfloat tamanho, GLfloat altura);
         static void grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint id);
-	static void criaTextura(SDL_Surface* image, GLuint id);
-	static void esfera(SDL_Surface *textura, GLuint id);
+        static void criaTextura(SDL_Surface* image, GLuint id);
+        static void esfera(GLfloat raio, SDL_Surface *textura, GLuint id);
+        static void cubo(GLfloat lado);
 };
 
 #endif

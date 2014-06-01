@@ -54,3 +54,19 @@ void Braco::selecionarJunta(int i) {
 void Braco::rotacionarSelecao(int i) {
     juntas.at(juntaSelecionada)->rotacionar(i);
 }
+
+float* Braco::posicaoPunho() {
+    glPushMatrix();
+        glLoadIdentity();
+        glRotatef(juntas.at(0)->rotacao, 0.0f, 1.0f, 0.0f);
+        glTranslatef(0.0f, 1.0f, 0.0f);
+        glRotatef(juntas.at(1)->rotacao, 1.0f, 0.0f, 0.0f);
+        glTranslatef(0.0f, 0.0f, -3.0f);
+        glRotatef(juntas.at(2)->rotacao, 1.0f, 0.0f, 0.0f);
+        glTranslatef(0.0f, 0.0f, -3.0f);
+        glRotatef(juntas.at(3)->rotacao, 1.0f, 0.0f, 0.0f);
+        glTranslatef(0.3f, -0.6f, 0.0f);
+        glRotatef(juntas.at(4)->rotacao, 0.0f, 1.0f, 0.0f);
+        glTranslatef(0.0f, -0.9f, 0.0f);
+    glPopMatrix();
+}

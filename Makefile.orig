@@ -1,15 +1,23 @@
 CXX = g++
+<<<<<<< HEAD
+CXXFLAGS = -g -Wall `sdl2-config --cflags`
+LIBS = -lGL `sdl2-config --libs` -lGLU -lGL -lX11 -lm  -lGLEW
+=======
 CXXFLAGS = -g -Wall `sdl2-config --cflags` `pkg-config --cflags bullet`
-LIBS = -lGL -lGLU `sdl2-config --libs` `pkg-config --libs bullet`
+LIBS = -lGL `sdl2-config --libs` `pkg-config --libs bullet`
+>>>>>>> semtextura
 OUT = claw
 
 OBJ = claw.o \
       formas.o \
       junta.o \
       braco.o \
-      Load.o \
+<<<<<<< HEAD
+      Load.o
+=======
       camera.o \
       fisica.o
+>>>>>>> semtextura
 
 all: $(OUT)
 
