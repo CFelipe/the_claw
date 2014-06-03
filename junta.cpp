@@ -52,23 +52,23 @@ BaseTorcional::BaseTorcional() : Junta(90.0f, -90.0f) {
 }
 
 void BaseTorcional::renderizar() {
-	/*posicaoLuz[2][0] = 0;
+        /*posicaoLuz[2][0] = 0;
         posicaoLuz[2][1] = 2.0;
         posicaoLuz[2][2] = -6;*/
-	
+
     glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
 
     glCallList(modelo);
-	
-    	glTranslatef(0.0f, 1.0f, 0.0f);
-	GLfloat d[3] = {0,-1,0};
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 
-	
-	
-	
+        glTranslatef(0.0f, 1.0f, 0.0f);
+        GLfloat d[3] = {0,-1,0};
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 
-	
+
+
+
+
+
 }
 
 JuntaRotacional1::JuntaRotacional1() : Junta(60.0f, 0.0f, 30.0f) {
@@ -76,13 +76,13 @@ JuntaRotacional1::JuntaRotacional1() : Junta(60.0f, 0.0f, 30.0f) {
 }
 
 void JuntaRotacional1::renderizar() {
-	
+
     glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
     glCallList(modelo);
     glTranslatef(0.0f, 0.0f, -3.0f);
 GLfloat d[3] = {0,-1,0};
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
-	
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+
 }
 
 JuntaRotacional2::JuntaRotacional2() : Junta(0.0f, -30.0f, 0.0f) {
@@ -90,12 +90,12 @@ JuntaRotacional2::JuntaRotacional2() : Junta(0.0f, -30.0f, 0.0f) {
 }
 
 void JuntaRotacional2::renderizar() {
-	
+
     glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
     glCallList(modelo);
     glTranslatef(0.0f, 0.0f, -3.0f);
 GLfloat d[3] = {0,-1,0};
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 }
 
 JuntaRotacional3::JuntaRotacional3() : Junta(45.0f, -45.0f) {
@@ -108,7 +108,7 @@ void JuntaRotacional3::renderizar() {
 
     glTranslatef(0.3f, -0.6f, 0.0f);
 GLfloat d[3] = {0,-1,0};
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 
 }
 
@@ -121,5 +121,5 @@ void JuntaTorcional::renderizar() {
     glCallList(modelo);
     glTranslatef(0.0f, -0.9f, 0.0f);
 GLfloat d[3] = {0,-1,0};
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 }

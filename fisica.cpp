@@ -18,8 +18,8 @@ Fisica::Fisica() {
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 
     groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
-
     fallShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
+    //garraShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
 
     groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),
                                                              btVector3(0,-1,0)));
@@ -28,6 +28,7 @@ Fisica::Fisica() {
     groundRigidBody = new btRigidBody(groundRigidBodyCI);
     dynamicsWorld->addRigidBody(groundRigidBody);
 
+    // ----------
 
     fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0.1f,0,1),
                                                            btVector3(7, 0.5f, -1)));
@@ -44,6 +45,8 @@ Fisica::Fisica() {
     fallRigidBody->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f));
     dynamicsWorld->addRigidBody(fallRigidBody);
 
+    // ----------
+
     fallMotionState2 = new btDefaultMotionState(btTransform(btQuaternion(0,0.5f,0,1),
                                                             btVector3(6,0.5f,2)));
 
@@ -53,17 +56,38 @@ Fisica::Fisica() {
 
     dynamicsWorld->addRigidBody(fallRigidBody2);
 
-    fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0,0.8f,0,1),
-                                                            btVector3(6,0.5f,5)));
+    // ----------
+
+    fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0.2,0.8f,0,1),
+                                                            btVector3(4,9.5f,0)));
 
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState3,fallShape,fallInertia);
     fallRigidBodyCI3.m_friction = 0.7f;
     fallRigidBody3 = new btRigidBody(fallRigidBodyCI3);
 
     dynamicsWorld->addRigidBody(fallRigidBody3);
+
+    // ----------
+
+    garraMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),
+                                                            btVector3(0,0.5f,0)));
+
+
+    btRigidBody::btRigidBodyConstructionInfo garraRigidBodyCI(mass,garraMotionState,fallShape,fallInertia);
+    garraRigidBodyCI.m_friction = 0.7f;
+    garraRigidBody = new btRigidBody(garraRigidBodyCI);
+    garraRigidBody->setCollisionFlags(garraRigidBody->getCollisionFlags() |
+                                      btCollisionObject::CF_KINEMATIC_OBJECT);
+    garraRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+
+    dynamicsWorld->addRigidBody(garraRigidBody);
 }
 
-void Fisica::atualizar(float dt) {
+void Fisica::atualizar(float dt, const float *m) {
+    btTransform garraTrans = btTransform(btQuaternion(0,0,0,1), btVector3(0,0.5f,0));
+    garraTrans.setFromOpenGLMatrix(m);
+    garraRigidBody->getMotionState()->setWorldTransform(garraTrans);
     dynamicsWorld->stepSimulation(dt, 10);
 }
 

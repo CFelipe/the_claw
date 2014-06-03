@@ -39,31 +39,31 @@ void iluminacao() {
         posicaoLuz[1][2] = 00.0;
         posicaoLuz[1][3] = 1.0;
 
-	posicaoLuz[3][0] = -20.0;
+        posicaoLuz[3][0] = -20.0;
         posicaoLuz[3][1] = 5.0;
         posicaoLuz[3][2] = 0.0;
         posicaoLuz[3][3] = 1.0;
 
-	
-	
+
+
         posicaoLuz[2][3] = 1.0;
-	
-	difusao[2][0] = 10.0;
+
+        difusao[2][0] = 10.0;
         difusao[2][1] = 10.0;
         difusao[2][2] = 10.0;
         difusao[2][3] = 1.0;
 
-	difusao[3][0] = 0.5;
+        difusao[3][0] = 0.5;
         difusao[3][1] = 0.5;
         difusao[3][2] = 0.5;
         difusao[3][3] = 1.0;
 
 
-	ambiente[1][0] = 0.3;
+        ambiente[1][0] = 0.3;
         ambiente[1][1] = 0.3;
         ambiente[1][2] = 0.3;
         ambiente[1][3] = 0.3;
-	
+
         /*glPushMatrix();
             glTranslatef(posicaoLuz[0][0], posicaoLuz[0][1], posicaoLuz[0][2]);
             Formas::piramide(1.0f, 2.0f);
@@ -79,18 +79,18 @@ void iluminacao() {
             glTranslatef(posicaoLuz[3][0], posicaoLuz[3][1], posicaoLuz[3][2]);
             Formas::piramide(0.5f, 1.0f);
         glPopMatrix();
-	*/
-	
+        */
 
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambiente[1]);
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,especular[1]);
+
+        //glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambiente[1]);
+        //glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,especular[1]);
         //glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, 20); // componente especular do material
 //
       // glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambiente[1]);
 
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambiente[1]);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, difusao[1]);
-       	glLightfv(GL_LIGHT0, GL_SPECULAR, especular[1]);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, especular[1]);
         glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz[0]);
 
         glLightfv(GL_LIGHT1, GL_AMBIENT, ambiente[1]);
@@ -103,14 +103,14 @@ void iluminacao() {
         glLightfv(GL_LIGHT3, GL_SPECULAR, especular[1]);
         glLightfv(GL_LIGHT3, GL_POSITION, posicaoLuz[2]);
 
-	
+
 
 
        // glLightfv(GL_LIGHT2, GL_AMBIENT, ambiente[0]);
         glLightfv(GL_LIGHT2, GL_DIFFUSE, difusao[2]);
        glLightfv(GL_LIGHT2, GL_SPECULAR, especular[1]);
-	glLightf(GL_LIGHT2, GL_SPOT_EXPONENT,0);
-	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF,65);
+        glLightf(GL_LIGHT2, GL_SPOT_EXPONENT,0);
+        glLightf(GL_LIGHT2, GL_SPOT_CUTOFF,65);
 
 
 }
@@ -145,10 +145,10 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHTING); // liga a luz
         glEnable(GL_LIGHT0); // define a luz 0
         glEnable(GL_LIGHT1); // define a luz 1
-	glEnable(GL_LIGHT3); // define a luz 1
+        glEnable(GL_LIGHT3); // define a luz 1
 
        glEnable(GL_LIGHT2); // define a luz 1
-	
+
         SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
         SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
 
@@ -171,6 +171,8 @@ int main( int argc, char* args[] ) {
         Fisica* fisica = new Fisica();
         Camera* camera = new Camera();
         Braco* braco = new Braco();
+
+        float m2[16] = {0};
 
         while(!quit) {
             tempoPassado = tempoAtual;
@@ -232,13 +234,16 @@ int main( int argc, char* args[] ) {
                 }
             }
 
-            fisica->atualizar(dt);
+            fisica->atualizar(dt, m2);
             camera->atualizar(dt);
             braco->atualizar(dt);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glMatrixMode(GL_MODELVIEW);
+
+            braco->posicaoPunho(m2);
+
             glLoadIdentity();
 
             // Renderização ----------------------------------
@@ -257,14 +262,11 @@ int main( int argc, char* args[] ) {
 
             glPushMatrix();
                 braco->renderizar();
-		posicaoLuz[2][0] = 0;
-		posicaoLuz[2][1] = 0;
-		posicaoLuz[2][2] = 0;	
-		glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz[2]);
-		 //  Formas::cubo(1.0f);
+                posicaoLuz[2][0] = 0;
+                posicaoLuz[2][1] = 0;
+                posicaoLuz[2][2] = 0;
+                glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz[2]);
             glPopMatrix();
-
-            std::cout << braco->posicaoPunho()[0] << std::endl;
 
             glColor3f(1.0, 0.0, 0.0);
 
@@ -300,6 +302,16 @@ int main( int argc, char* args[] ) {
                 Formas::cubo(1.0f);
             glPopMatrix();
 
+            fisica->garraRigidBody->getMotionState()->getWorldTransform(trans);
+            trans.getOpenGLMatrix(m);
+
+            glPushMatrix();
+                glMultMatrixf((GLfloat*)m);
+
+                Formas::cubo(1.0f);
+            glPopMatrix();
+
+            // Projeção -------------
 
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();

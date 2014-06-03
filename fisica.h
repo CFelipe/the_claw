@@ -7,13 +7,14 @@ class Fisica {
     public:
         Fisica();
         void init();
-        void atualizar(float dt);
+        void atualizar(float dt, const float* m);
         void remover();
 
         btRigidBody* groundRigidBody;
         btRigidBody* fallRigidBody;
         btRigidBody* fallRigidBody2;
         btRigidBody* fallRigidBody3;
+        btRigidBody* garraRigidBody;
 
     private:
         btBroadphaseInterface* broadphase;
@@ -26,11 +27,11 @@ class Fisica {
         btDefaultMotionState* fallMotionState;
         btDefaultMotionState* fallMotionState2;
         btDefaultMotionState* fallMotionState3;
+        btDefaultMotionState* garraMotionState;
 
         btCollisionShape* groundShape;
         btCollisionShape* fallShape;
-        btCollisionShape* fallShape2;
-        btCollisionShape* fallShape3;
+        btCollisionShape* garraShape;
 };
 
 #endif
