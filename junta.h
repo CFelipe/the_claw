@@ -59,4 +59,12 @@ class JuntaTorcional : public Junta {
         void renderizar();
 };
 
+class Garra : public Junta {
+    public:
+        Garra();
+        void renderizar();
+    private:
+        int modelo2;
+};
+
 #endif

@@ -5,12 +5,18 @@ Braco::Braco() {
     modeloBase = Load::loadObject("modelos/base.obj");
 
     juntaSelecionada = 0;
+    int i;
+    for(i = 0; i < 16; i++) {
+        esq[i] = 0;
+        dir[i] = 0;
+    }
 
     juntas.push_back(new BaseTorcional());
     juntas.push_back(new JuntaRotacional1());
     juntas.push_back(new JuntaRotacional2());
     juntas.push_back(new JuntaRotacional3());
     juntas.push_back(new JuntaTorcional());
+    juntas.push_back(new Garra());
 }
 
 void Braco::atualizar(float dt) {
@@ -18,6 +24,8 @@ void Braco::atualizar(float dt) {
     for(it = juntas.begin(); it != juntas.end(); ++it) {
         (*it)->atualizar(dt);
     }
+
+    atualizarMatrizes();
 }
 
 void Braco::renderizar() {
@@ -55,7 +63,7 @@ void Braco::rotacionarSelecao(int i) {
     juntas.at(juntaSelecionada)->rotacionar(i);
 }
 
-void Braco::posicaoPunho(float* m) {
+void Braco::atualizarMatrizes() {
     glPushMatrix();
         glLoadIdentity();
         glRotatef(juntas.at(0)->rotacao, 0.0f, 1.0f, 0.0f);
@@ -68,6 +76,14 @@ void Braco::posicaoPunho(float* m) {
         glTranslatef(0.3f, -0.6f, 0.0f);
         glRotatef(juntas.at(4)->rotacao, 0.0f, 1.0f, 0.0f);
         glTranslatef(0.0f, -0.9f, 0.0f);
-        glGetFloatv(GL_MODELVIEW_MATRIX, m);
+        glPushMatrix();
+            glTranslatef(-0.5f - juntas.at(5)->rotacao, 0, 0);
+            glGetFloatv(GL_MODELVIEW_MATRIX, esq);
+        glPopMatrix();
+
+        glPushMatrix();
+            glTranslatef(0.5f + juntas.at(5)->rotacao, 0, 0);
+            glGetFloatv(GL_MODELVIEW_MATRIX, dir);
+        glPopMatrix();
     glPopMatrix();
 }

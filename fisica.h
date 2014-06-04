@@ -2,19 +2,22 @@
 #define FISICA_H
 
 #include <btBulletDynamicsCommon.h>
+#include "braco.h"
 
 class Fisica {
     public:
         Fisica();
         void init();
-        void atualizar(float dt, const float* m);
+        void atualizar(float dt, Braco* b);
         void remover();
 
         btRigidBody* groundRigidBody;
         btRigidBody* fallRigidBody;
         btRigidBody* fallRigidBody2;
         btRigidBody* fallRigidBody3;
-        btRigidBody* garraRigidBody;
+        btRigidBody* garraLRigidBody;
+        btRigidBody* garraRRigidBody;
+        btRigidBody* ballRigidBody;
 
     private:
         btBroadphaseInterface* broadphase;
@@ -27,11 +30,14 @@ class Fisica {
         btDefaultMotionState* fallMotionState;
         btDefaultMotionState* fallMotionState2;
         btDefaultMotionState* fallMotionState3;
-        btDefaultMotionState* garraMotionState;
+        btDefaultMotionState* ballMotionState;
+        btDefaultMotionState* garraLMotionState;
+        btDefaultMotionState* garraRMotionState;
 
         btCollisionShape* groundShape;
         btCollisionShape* fallShape;
         btCollisionShape* garraShape;
+        btCollisionShape* ballShape;
 };
 
 #endif

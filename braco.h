@@ -11,7 +11,8 @@ class Braco {
         void renderizar();
         void selecionarJunta(int i);
         void rotacionarSelecao(int i);
-        void posicaoPunho(float* m);
+        void atualizarMatrizes();
+        float esq[16], dir[16];
 
     private:
         std::vector<Junta*> juntas;

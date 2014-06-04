@@ -16,9 +16,6 @@ GLfloat especular[4][4]; // brilho
 GLfloat posicaoLuz[4][4];
 
 void iluminacao() {
-
-
-
         posicaoLuz[0][0] = 10.0f;
         posicaoLuz[0][1] = 5.0f;
         posicaoLuz[0][2] = 0.0f;
@@ -145,9 +142,8 @@ int main( int argc, char* args[] ) {
         glEnable(GL_LIGHTING); // liga a luz
         glEnable(GL_LIGHT0); // define a luz 0
         glEnable(GL_LIGHT1); // define a luz 1
-        glEnable(GL_LIGHT3); // define a luz 1
-
-       glEnable(GL_LIGHT2); // define a luz 1
+        glEnable(GL_LIGHT2); // define a luz 1
+        //glEnable(GL_LIGHT3); // define a luz 1
 
         SDL_Surface *textura = SDL_LoadBMP("gama_2.bmp");
         SDL_Surface *brazuca = SDL_LoadBMP("brazuca.bmp");
@@ -171,8 +167,6 @@ int main( int argc, char* args[] ) {
         Fisica* fisica = new Fisica();
         Camera* camera = new Camera();
         Braco* braco = new Braco();
-
-        float m2[16] = {0};
 
         while(!quit) {
             tempoPassado = tempoAtual;
@@ -234,15 +228,13 @@ int main( int argc, char* args[] ) {
                 }
             }
 
-            fisica->atualizar(dt, m2);
-            camera->atualizar(dt);
-            braco->atualizar(dt);
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glMatrixMode(GL_MODELVIEW);
 
-            braco->posicaoPunho(m2);
+            camera->atualizar(dt);
+            braco->atualizar(dt);
+            fisica->atualizar(dt, braco);
 
             glLoadIdentity();
 
@@ -254,11 +246,6 @@ int main( int argc, char* args[] ) {
 
             Formas::grade(300.0f, 10.0f, textura, piso);
             Formas::xyz(100.0f, 0.0f);
-
-            glPushMatrix();
-                glTranslatef(4, 0.5, -3);
-                Formas::esfera(0.6, brazuca, esfera);
-            glPopMatrix();
 
             glPushMatrix();
                 braco->renderizar();
@@ -302,14 +289,24 @@ int main( int argc, char* args[] ) {
                 Formas::cubo(1.0f);
             glPopMatrix();
 
-            fisica->garraRigidBody->getMotionState()->getWorldTransform(trans);
+            fisica->garraRRigidBody->getMotionState()->getWorldTransform(trans);
             trans.getOpenGLMatrix(m);
 
             glPushMatrix();
                 glMultMatrixf((GLfloat*)m);
 
-                Formas::cubo(1.0f);
+                Formas::cubo(0.3f);
             glPopMatrix();
+
+            fisica->ballRigidBody->getMotionState()->getWorldTransform(trans);
+            trans.getOpenGLMatrix(m);
+
+            glPushMatrix();
+                glMultMatrixf((GLfloat*)m);
+
+                Formas::esfera(0.6, brazuca, esfera);
+            glPopMatrix();
+
 
             // Projeção -------------
 

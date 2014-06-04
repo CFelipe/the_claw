@@ -10,6 +10,7 @@
 
 const float EPSILON = 0.0001f;
 const float PI = 3.14;
+
 void Formas::criaTextura(SDL_Surface* image, GLuint id)
 {
 
@@ -25,9 +26,6 @@ void Formas::criaTextura(SDL_Surface* image, GLuint id)
     GLint formato = image->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA;
 
     glTexImage2D(GL_TEXTURE_2D, 0, formato,image->w, image->h, 0, formato, GL_UNSIGNED_BYTE, image->pixels);
-
-
-
 }
 
 
@@ -81,11 +79,11 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint
     glEnable(GL_TEXTURE_2D);
 
     glLineWidth(1);
-    
+
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
     glColor3f(0.0, 1.0, 0.0);
-    glNormal3f(0,1,0);
+    glNormal3f(1,1,0);
     criaTextura(textura, id);
     glBegin(GL_QUADS);
     glTexCoord2i(0,0);

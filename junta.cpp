@@ -15,7 +15,7 @@ Junta::Junta(GLfloat rotacaoMax,
     this->atrito = atrito;
     this->acelMax = acelMax;
     this->vel = 0.0f;
-    this->acel= 0.0f;
+    this->acel = 0.0f;
 }
 
 void Junta::atualizar(float dt) {
@@ -46,7 +46,7 @@ void Junta::rotacionar(int i) {
 
 // Juntas -------------------------
 
-BaseTorcional::BaseTorcional() : Junta(90.0f, -90.0f) {
+BaseTorcional::BaseTorcional() : Junta(360.0f, -360.0f) {
 
     modelo = Load::loadObject("modelos/base_junta.obj");
 }
@@ -94,8 +94,8 @@ void JuntaRotacional2::renderizar() {
     glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
     glCallList(modelo);
     glTranslatef(0.0f, 0.0f, -3.0f);
-GLfloat d[3] = {0,-1,0};
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+    GLfloat d[3] = {0,-1,0};
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 }
 
 JuntaRotacional3::JuntaRotacional3() : Junta(45.0f, -45.0f) {
@@ -107,8 +107,8 @@ void JuntaRotacional3::renderizar() {
     glCallList(modelo);
 
     glTranslatef(0.3f, -0.6f, 0.0f);
-GLfloat d[3] = {0,-1,0};
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+    GLfloat d[3] = {0,-1,0};
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 
 }
 
@@ -120,6 +120,23 @@ void JuntaTorcional::renderizar() {
     glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
     glCallList(modelo);
     glTranslatef(0.0f, -0.9f, 0.0f);
-GLfloat d[3] = {0,-1,0};
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+    GLfloat d[3] = {0,-1,0};
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
+}
+
+Garra::Garra() : Junta(0.5f, 0.0f, 0.0f, 0.5f, 0.3f) {
+    modelo = Load::loadObject("modelos/garra_l.obj");
+    modelo2 = Load::loadObject("modelos/garra_r.obj");
+}
+
+void Garra::renderizar() {
+    glPushMatrix();
+        glTranslatef(-0.5f - rotacao, 0, 0);
+        glCallList(modelo);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0.5f + rotacao, 0, 0);
+        glCallList(modelo2);
+    glPopMatrix();
 }
