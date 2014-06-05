@@ -85,7 +85,7 @@ GLfloat d[3] = {0,-1,0};
 
 }
 
-JuntaRotacional2::JuntaRotacional2() : Junta(0.0f, -30.0f, 0.0f) {
+JuntaRotacional2::JuntaRotacional2() : Junta(0.0f, -60.0f, 0.0f) {
     modelo = Load::loadObject("modelos/junta_r2.obj");
 }
 
@@ -124,7 +124,7 @@ void JuntaTorcional::renderizar() {
     glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 }
 
-Garra::Garra() : Junta(0.5f, 0.0f, 0.0f, 0.5f, 0.3f) {
+Garra::Garra() : Junta(0.5f, 0.0f, 0.5f, 0.5f, 0.3f) {
     modelo = Load::loadObject("modelos/garra_l.obj");
     modelo2 = Load::loadObject("modelos/garra_r.obj");
 }

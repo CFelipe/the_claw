@@ -1,6 +1,7 @@
 #ifndef FISICA_H
 #define FISICA_H
 
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <btBulletDynamicsCommon.h>
 #include "braco.h"
 
@@ -38,6 +39,9 @@ class Fisica {
         btCollisionShape* fallShape;
         btCollisionShape* garraShape;
         btCollisionShape* ballShape;
+
+        btGhostObject* garraLGhost;
+        btGhostObject* garraRGhost;
 };
 
 #endif

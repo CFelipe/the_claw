@@ -26,6 +26,7 @@ Fisica::Fisica() {
                                                              btVector3(0,-1,0)));
     btRigidBody::btRigidBodyConstructionInfo
             groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
+    groundRigidBodyCI.m_restitution = 0.5f;
     groundRigidBody = new btRigidBody(groundRigidBodyCI);
     dynamicsWorld->addRigidBody(groundRigidBody);
 
@@ -33,15 +34,15 @@ Fisica::Fisica() {
 
     fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0.1f,0,1),
                                                            btVector3(7, 0.5f, -1)));
-    btScalar mass = 1;
-    btVector3 fallInertia(0,0,0);
+    btScalar mass = 30.0f;
+    btVector3 fallInertia;
     fallShape->calculateLocalInertia(mass,fallInertia);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,
                                                              fallMotionState,
                                                              fallShape,
                                                              fallInertia);
 
-    fallRigidBodyCI.m_friction = 0.7f;
+    fallRigidBodyCI.m_friction = 1.7f;
     fallRigidBody = new btRigidBody(fallRigidBodyCI);
     fallRigidBody->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f));
     dynamicsWorld->addRigidBody(fallRigidBody);
@@ -52,7 +53,7 @@ Fisica::Fisica() {
                                                             btVector3(6,0.5f,2)));
 
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI2(mass,fallMotionState2,fallShape,fallInertia);
-    fallRigidBodyCI2.m_friction = 0.7f;
+    fallRigidBodyCI2.m_friction = 1.7f;
     fallRigidBody2 = new btRigidBody(fallRigidBodyCI2);
 
     dynamicsWorld->addRigidBody(fallRigidBody2);
@@ -60,10 +61,11 @@ Fisica::Fisica() {
     // ----------
 
     fallMotionState3 = new btDefaultMotionState(btTransform(btQuaternion(0.2,0.8f,0,1),
-                                                            btVector3(4,9.5f,0)));
+                                                            btVector3(4,9.5f,6)));
 
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI3(mass,fallMotionState3,fallShape,fallInertia);
-    fallRigidBodyCI3.m_friction = 0.7f;
+    fallRigidBodyCI3.m_friction = 1.7f;
+    fallRigidBodyCI3.m_restitution = 0.3f;
     fallRigidBody3 = new btRigidBody(fallRigidBodyCI3);
 
     dynamicsWorld->addRigidBody(fallRigidBody3);
@@ -81,8 +83,8 @@ Fisica::Fisica() {
     btRigidBody::btRigidBodyConstructionInfo garraRRigidBodyCI(mass,garraRMotionState,garraShape,fallInertia);
 
     // por que não?
-    garraLRigidBodyCI.m_friction = 100.0f;
-    garraRRigidBodyCI.m_friction = 100.0f;
+    garraLRigidBodyCI.m_friction = 10.0f;
+    garraRRigidBodyCI.m_friction = 10.0f;
 
     garraLRigidBody = new btRigidBody(garraLRigidBodyCI);
     garraRRigidBody = new btRigidBody(garraRRigidBodyCI);
@@ -102,19 +104,25 @@ Fisica::Fisica() {
     // ----------
 
     ballMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),
-                                                            btVector3(5,0.5f,0)));
+                                                            btVector3(5,10.5f,0)));
 
 
-    btRigidBody::btRigidBodyConstructionInfo ballRigidBodyCI(mass,ballMotionState,ballShape,fallInertia);
-    ballRigidBodyCI.m_friction = 0.7f;
+    btVector3 ballInertia;
+    ballShape->calculateLocalInertia(30.0f, ballInertia);
+    btRigidBody::btRigidBodyConstructionInfo ballRigidBodyCI(30.0f, ballMotionState,ballShape,ballInertia);
+    ballRigidBodyCI.m_friction = 1.7f;
+    ballRigidBodyCI.m_restitution = 0.7f;
     ballRigidBody = new btRigidBody(ballRigidBodyCI);
+    ballRigidBody->setDamping(0.3, 0.5f);
 
     dynamicsWorld->addRigidBody(ballRigidBody);
 }
 
 void Fisica::atualizar(float dt, Braco* braco) {
-    btTransform garraLTrans = btTransform(btQuaternion(0,0,0,1), btVector3(0,0.5f,0));
-    btTransform garraRTrans;// = btTransform(btQuaternion(0,0,0,1), btVector3(0,0.5f,0));
+    //std::cout << dynamicsWorld->getNumCollisionObjects() << std::endl;
+
+    btTransform garraLTrans;
+    btTransform garraRTrans;
 
     garraLTrans.setFromOpenGLMatrix(braco->esq);
     garraLRigidBody->getMotionState()->setWorldTransform(garraLTrans);

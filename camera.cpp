@@ -1,5 +1,6 @@
 #include "camera.h"
 #include <SDL_opengl.h>
+#include <iostream>
 
 Camera::Camera() {
     this->acelMax = 7.0f;
@@ -47,6 +48,14 @@ void Camera::alterarProjecao() {
 }
 
 void Camera::atualizar(float dt) {
+    if(rotacaoY < 10 && acelY < 0) {
+        acelY = 0;
+    }
+
+    if(rotacaoY > 80 && acelY > 0) {
+        acelY = 0;
+    }
+
     velX += acelX;
     velY += acelY;
     velZoom += acelZoom;
@@ -60,6 +69,7 @@ void Camera::atualizar(float dt) {
     acelX = 0;
     acelY = 0;
     acelZoom = 0;
+
 }
 
 void Camera::posicionar() {
