@@ -11,8 +11,7 @@
 const float EPSILON = 0.0001f;
 const float PI = 3.14;
 
-void Formas::criaTextura(SDL_Surface* image, GLuint id)
-{
+void Formas::criaTextura(SDL_Surface* image, GLuint id) {
 
     glBindTexture(GL_TEXTURE_2D, id);
         //std::cout<<id<<std::endl;
@@ -45,7 +44,6 @@ void Formas::esfera(GLfloat raio, SDL_Surface *textura, GLuint id){
 
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_TEXTURE_2D);
-
 }
 
 void Formas::xyz(GLfloat tamanho, GLfloat altura) {
@@ -76,6 +74,8 @@ void Formas::xyz(GLfloat tamanho, GLfloat altura) {
 }
 
 void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint id) {
+    int coordMax = 256;
+
     glEnable(GL_TEXTURE_2D);
 
     glLineWidth(1);
@@ -83,21 +83,21 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
     glColor3f(0.0, 1.0, 0.0);
-    glNormal3f(1,1,0);
+    glNormal3f(0,1,0);
     criaTextura(textura, id);
+
     glBegin(GL_QUADS);
-    glTexCoord2i(0,0);
+        glTexCoord2i(0,0);
+        glVertex3f(-256, 0, -256);
 
-    glVertex3f(-256, 0, -256);
+        glTexCoord2i(0,coordMax);
+        glVertex3f(-256, 0, 256);
 
-    glTexCoord2i(0,20);
-    glVertex3f(-256, 0, 256);
+        glTexCoord2i(coordMax,coordMax);
+        glVertex3f(256, 0, 256);
 
-    glTexCoord2i(20,20);
-    glVertex3f(256, 0, 256);
-
-    glTexCoord2i(20,0);
-    glVertex3f(256, 0, -256);
+        glTexCoord2i(coordMax,0);
+        glVertex3f(256, 0, -256);
     glEnd();
 
     glDisable(GL_COLOR_MATERIAL);

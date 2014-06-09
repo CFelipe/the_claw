@@ -1,5 +1,6 @@
 #include "braco.h"
 #include "Load.h"
+#include <iostream>
 
 Braco::Braco() {
     modeloBase = Load::loadObject("modelos/base.obj");
@@ -9,7 +10,10 @@ Braco::Braco() {
     for(i = 0; i < 16; i++) {
         esq[i] = 0;
         dir[i] = 0;
+        topo[i] = 0;
     }
+
+    garraLock = false;
 
     juntas.push_back(new BaseTorcional());
     juntas.push_back(new JuntaRotacional1());
@@ -75,7 +79,14 @@ void Braco::atualizarMatrizes() {
         glRotatef(juntas.at(3)->rotacao, 1.0f, 0.0f, 0.0f);
         glTranslatef(0.3f, -0.6f, 0.0f);
         glRotatef(juntas.at(4)->rotacao, 0.0f, 1.0f, 0.0f);
+
+        glPushMatrix();
+            glTranslatef(0, -0.2f, 0);
+            glGetFloatv(GL_MODELVIEW_MATRIX, topo);
+        glPopMatrix();
+
         glTranslatef(0.0f, -0.9f, 0.0f);
+
         glPushMatrix();
             glTranslatef(-0.5f - juntas.at(5)->rotacao, 0, 0);
             glGetFloatv(GL_MODELVIEW_MATRIX, esq);

@@ -80,7 +80,7 @@ void JuntaRotacional1::renderizar() {
     glRotatef(rotacao, 1.0f, 0.0f, 0.0f);
     glCallList(modelo);
     glTranslatef(0.0f, 0.0f, -3.0f);
-GLfloat d[3] = {0,-1,0};
+    GLfloat d[3] = {0,-1,0};
         glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
 
 }

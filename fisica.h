@@ -16,6 +16,7 @@ class Fisica {
         btRigidBody* fallRigidBody;
         btRigidBody* fallRigidBody2;
         btRigidBody* fallRigidBody3;
+        btRigidBody* topoRigidBody;
         btRigidBody* garraLRigidBody;
         btRigidBody* garraRRigidBody;
         btRigidBody* ballRigidBody;
@@ -32,16 +33,24 @@ class Fisica {
         btDefaultMotionState* fallMotionState2;
         btDefaultMotionState* fallMotionState3;
         btDefaultMotionState* ballMotionState;
+        btDefaultMotionState* topoMotionState;
         btDefaultMotionState* garraLMotionState;
         btDefaultMotionState* garraRMotionState;
 
         btCollisionShape* groundShape;
         btCollisionShape* fallShape;
         btCollisionShape* garraShape;
+        btCollisionShape* topoShape;
         btCollisionShape* ballShape;
 
+        btGhostPairCallback* ghostCall;
         btGhostObject* garraLGhost;
         btGhostObject* garraRGhost;
+
+        btVector3* consVector();
+
+        bool ballEsq, ballDir;
+
 };
 
 #endif

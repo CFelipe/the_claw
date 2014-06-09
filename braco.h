@@ -12,7 +12,8 @@ class Braco {
         void selecionarJunta(int i);
         void rotacionarSelecao(int i);
         void atualizarMatrizes();
-        float esq[16], dir[16];
+        float esq[16], dir[16], topo[16];
+        bool garraLock;
 
     private:
         std::vector<Junta*> juntas;

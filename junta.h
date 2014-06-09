@@ -10,7 +10,7 @@ class Junta {
               GLfloat rotacaoMin = 0.0f,
               GLfloat rotacaoInicial = 0.0f,
               GLfloat atrito = 0.85f,
-              GLfloat acelMax = 5.00f);
+              GLfloat acelMax = 3.00f);
         void atualizar(float dt);
         void rotacionar(int i);
         virtual void renderizar() = 0;
