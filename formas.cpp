@@ -8,13 +8,9 @@
 #include <GL/glu.h>
 #include "formas.h"
 
-const float EPSILON = 0.0001f;
-const float PI = 3.14;
-
 void Formas::criaTextura(SDL_Surface* image, GLuint id) {
 
     glBindTexture(GL_TEXTURE_2D, id);
-        //std::cout<<id<<std::endl;
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
@@ -83,7 +79,7 @@ void Formas::grade(GLfloat tamanho, GLfloat espaco, SDL_Surface *textura, GLuint
     glColorMaterial(GL_FRONT, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
     glColor3f(0.0, 1.0, 0.0);
-    glNormal3f(0,1,0);
+    glNormal3f(1,-1,0);
     criaTextura(textura, id);
 
     glBegin(GL_QUADS);

@@ -47,10 +47,9 @@ class Fisica {
         btGhostObject* garraLGhost;
         btGhostObject* garraRGhost;
 
-        btVector3* consVector();
+        btPoint2PointConstraint* pointConstraint;
 
         bool ballEsq, ballDir;
-
 };
 
 #endif

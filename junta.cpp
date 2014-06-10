@@ -52,23 +52,13 @@ BaseTorcional::BaseTorcional() : Junta(360.0f, -360.0f) {
 }
 
 void BaseTorcional::renderizar() {
-        /*posicaoLuz[2][0] = 0;
-        posicaoLuz[2][1] = 2.0;
-        posicaoLuz[2][2] = -6;*/
-
     glRotatef(rotacao, 0.0f, 1.0f, 0.0f);
 
     glCallList(modelo);
 
-        glTranslatef(0.0f, 1.0f, 0.0f);
-        GLfloat d[3] = {0,-1,0};
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION,d);
-
-
-
-
-
-
+    glTranslatef(0.0f, 1.0f, 0.0f);
+    GLfloat d[3] = {0,-1,0};
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, d);
 }
 
 JuntaRotacional1::JuntaRotacional1() : Junta(60.0f, 0.0f, 30.0f) {

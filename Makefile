@@ -9,7 +9,8 @@ OBJ = claw.o \
       braco.o \
       Load.o \
       camera.o \
-      fisica.o
+      fisica.o \
+      timing.o
 
 all: $(OUT)
 

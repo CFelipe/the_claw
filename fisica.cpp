@@ -155,6 +155,12 @@ void Fisica::atualizar(float dt, Braco* braco) {
     garraLTrans.setFromOpenGLMatrix(braco->esq);
     garraLRigidBody->getMotionState()->setWorldTransform(garraLTrans);
     garraLGhost->setWorldTransform(garraLTrans);
+    braco->garraX = (garraRRigidBody->getCenterOfMassPosition().x() +
+                     garraLRigidBody->getCenterOfMassPosition().x()) / 2;
+    braco->garraY = (garraRRigidBody->getCenterOfMassPosition().y() +
+                     garraLRigidBody->getCenterOfMassPosition().y()) / 2;
+    braco->garraZ = (garraRRigidBody->getCenterOfMassPosition().z() +
+                     garraLRigidBody->getCenterOfMassPosition().z()) / 2;
 
     garraRTrans.setFromOpenGLMatrix(braco->dir);
     garraRRigidBody->getMotionState()->setWorldTransform(garraRTrans);
@@ -164,6 +170,13 @@ void Fisica::atualizar(float dt, Braco* braco) {
     topoRigidBody->getMotionState()->setWorldTransform(topoTrans);
 
     dynamicsWorld->stepSimulation(dt, 10);
+
+    pointConstraint = new btPoint2PointConstraint(*topoRigidBody,
+                                                  *fallRigidBody,
+                                                  btVector3(0, -0.3, 0),
+                                                  btVector3(0, 0.5, 0));
+
+    //fallRigidBody->set
 
     // -----------------------
 
@@ -223,12 +236,10 @@ void Fisica::atualizar(float dt, Braco* braco) {
     }
 
     if(ballEsq && ballDir) {
-        //braco->garraLock = true;
-        //fallRigidBody->setWorldTransform(topoTrans);
+        dynamicsWorld->addConstraint(pointConstraint);
         fallRigidBody->setGravity(btVector3(0, 0, 0));
     } else {
-        //braco->garraLock = false;
-        fallRigidBody->setGravity(btVector3(0, -10, 0));
+        dynamicsWorld->removeConstraint(pointConstraint);
     }
 }
 

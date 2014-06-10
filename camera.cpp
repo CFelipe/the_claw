@@ -15,6 +15,12 @@ Camera::Camera() {
     this->acelY = 0.0f;
     this->acelZoom = 0.0f;
     this->projecao = PERSPECTIVA;
+    this->x = 0;
+    this->y = 0;
+    this->z = 0;
+    this->prevX = 0;
+    this->prevY = 0;
+    this->prevZ = 0;
 }
 
 void Camera::alterarDirecao(int horizontal, int vertical) {
@@ -47,7 +53,7 @@ void Camera::alterarProjecao() {
     }
 }
 
-void Camera::atualizar(float dt) {
+void Camera::atualizar(float dt, Braco* b) {
     if(rotacaoY < 10 && acelY < 0) {
         acelY = 0;
     }
@@ -55,6 +61,10 @@ void Camera::atualizar(float dt) {
     if(rotacaoY > 80 && acelY > 0) {
         acelY = 0;
     }
+
+    x += (b->sel[12] - x) / 15;
+    y += (b->sel[13] - y) / 15;
+    z += (b->sel[14] - z) / 15;
 
     velX += acelX;
     velY += acelY;
@@ -69,27 +79,28 @@ void Camera::atualizar(float dt) {
     acelX = 0;
     acelY = 0;
     acelZoom = 0;
-
 }
 
 void Camera::posicionar() {
     glScalef(zoom + 1, zoom + 1, zoom + 1);
-    glTranslatef(0.0f, -2.0f, -25.0f);
+
+    glTranslatef(0.0f, 0.0f, -50.0f);
     glRotatef(rotacaoY, 1.f, 0.f, 0.f);
     glRotatef(rotacaoX, 0.f, 1.f, 0.f);
+    glTranslatef(-x, -y, -z);
 }
 
 void Camera::projetar() {
     if(projecao == PERSPECTIVA) {
-        perspPro(30.0f, 1.5f, 1, 1000);
+        perspPro(15.0f, 1.5f, 1, 1000);
     } else if(projecao == ORTOGRAFICA) {
         orthoPro();
     }
 }
 
 void Camera::orthoPro() {
-    glOrtho(-10.0f, 10.0f,    // L, R
-            -10.0f, 10.0f,    // B, T
+    glOrtho(-15.0f, 15.0f,  // L, R
+            -10.0f, 10.0f,  // B, T
             -500, 500);     // N, F
 }
 
